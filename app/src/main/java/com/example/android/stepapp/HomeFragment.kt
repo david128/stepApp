@@ -7,13 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 
 
+class HomeFragment : Fragment() {
 
-/**
- * A simple [Fragment] subclass.
- * Use the [HistoryFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class HistoryFragment : Fragment() {
 
 
     override fun onCreateView(
@@ -21,6 +16,8 @@ class HistoryFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_history, container, false)
+        return inflater.inflate(R.layout.fragment_home, container, false)
     }
+
+
 }

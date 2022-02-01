@@ -4,12 +4,39 @@ package com.example.android.stepapp
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import com.google.android.material.bottomnavigation.BottomNavigationView
+
+private val homeFragment = HomeFragment()
+private val historyFragment = HistoryFragment()
+private val goalsFragment = GoalsFragment()
 
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        return layoutInflater.inflate(R.layout.fragment_history,container,false)
+        replaceFragment(homeFragment)
+
+        val bottom_nav = findViewById<BottomNavigationView>(R.id.bottom_nav)
+        bottom_nav.setOnItemSelectedListener {
+            when(it.itemId){
+                R.id.mainFrag -> replaceFragment(homeFragment)
+                R.id.goalsFragment -> replaceFragment(goalsFragment)
+                R.id.historyFragment-> replaceFragment(historyFragment)
+            }
+            true
+        }
+
     }
+
+    private fun replaceFragment(fragment: Fragment){
+        if (fragment!=null){
+            val transaction = supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.fragment_container,fragment)
+            transaction.commit()
+        }
+
+    }
+
 }
