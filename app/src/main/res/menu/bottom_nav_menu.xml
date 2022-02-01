@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/mainFrag"
+        android:title="Today"
+        android:icon="@drawable/ic_home"/>
+    <item
+        android:id="@+id/goalsFragment"
+        android:title="Goals"
+        android:icon="@drawable/ic_weekly"/>
+    <item
+        android:id="@+id/historyFragment"
+        android:title="History"
+        android:icon="@drawable/ic_monthly"/>
+</menu>
