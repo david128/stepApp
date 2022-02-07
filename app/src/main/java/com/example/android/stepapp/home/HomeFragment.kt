@@ -1,4 +1,4 @@
-package com.example.android.stepapp
+package com.example.android.stepapp.home
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,14 +7,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.example.android.stepapp.R
+import com.example.android.stepapp.database.DayDatabase
+import com.example.android.stepapp.database.GoalDatabase
 import com.example.android.stepapp.databinding.FragmentHomeBinding
+import com.example.android.stepapp.goal.GoalViewModel
+import com.example.android.stepapp.goal.GoalViewModelFactory
 
 
 class HomeFragment : Fragment() {
 
-    private lateinit var viewModel :HomeViewModel
+    private lateinit var viewModel : HomeViewModel
 
 
 
@@ -31,6 +35,20 @@ class HomeFragment : Fragment() {
             container,
             false
         )
+
+        //database set up
+        val application = requireNotNull(this.activity).application
+
+        val dataSource = DayDatabase.getInstance(application).dayDatabaseDao
+
+        val viewModelFactory = HomeViewModelFactory(dataSource, application)
+
+        val dayViewModel= ViewModelProvider(this,viewModelFactory).get(HomeViewModel::class.java)
+
+        binding.homeTrackerViewModel= dayViewModel
+        binding.setLifecycleOwner (this)
+
+
 
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
         //initial update

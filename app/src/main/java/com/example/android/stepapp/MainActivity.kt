@@ -3,8 +3,10 @@ package com.example.android.stepapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import com.example.android.stepapp.goal.GoalsFragment
+import com.example.android.stepapp.history.HistoryFragment
+import com.example.android.stepapp.home.HomeFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 private val homeFragment = HomeFragment()
