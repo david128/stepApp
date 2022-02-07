@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.example.android.stepapp.R
-import com.example.android.stepapp.database.GoalDatabase
 import com.example.android.stepapp.databinding.FragmentGoalsBinding
 import com.example.android.stepapp.databinding.FragmentHomeBinding
 

@@ -3,7 +3,6 @@ package com.example.android.stepapp.database
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.android.stepapp.DateFormatting
 import java.util.*
 
 

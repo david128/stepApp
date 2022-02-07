@@ -10,10 +10,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.android.stepapp.R
 import com.example.android.stepapp.database.DayDatabase
-import com.example.android.stepapp.database.GoalDatabase
 import com.example.android.stepapp.databinding.FragmentHomeBinding
-import com.example.android.stepapp.goal.GoalViewModel
-import com.example.android.stepapp.goal.GoalViewModelFactory
+
 
 
 class HomeFragment : Fragment() {

@@ -24,5 +24,5 @@ interface DayDatabaseDao {
     fun getAllDays() : LiveData<List<DayData>>
 
     @Query(value="SELECT * FROM day_table ORDER BY dayID DESC LIMIT 1")
-    fun getToday() : DayData
+    fun getToday() : DayData?
 }
