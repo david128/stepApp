@@ -31,9 +31,29 @@
                 app:layout_constraintBottom_toTopOf="@id/circularProgressBar"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                android:text="goal"
+                android:text="date"
 
                 />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/button_prev"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Prev" />
+
+                <Button
+                    android:id="@+id/button_next"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Next" />
+            </LinearLayout>
 
             <com.mikhaellopez.circularprogressbar.CircularProgressBar
                 android:id="@+id/circularProgressBar"

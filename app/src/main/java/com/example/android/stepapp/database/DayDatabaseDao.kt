@@ -25,4 +25,7 @@ interface DayDatabaseDao {
 
     @Query(value="SELECT * FROM day_table ORDER BY dayID DESC LIMIT 1")
     fun getToday() : DayData?
+
+    @Query(value="SELECT * FROM day_table  WHERE step_date = :queryDate")
+    fun getSpecificDay(queryDate:String ) : DayData?
 }

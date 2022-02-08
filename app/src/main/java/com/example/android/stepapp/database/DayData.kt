@@ -13,7 +13,7 @@ data class DayData(
     @PrimaryKey(autoGenerate = true)
     var dayID: Long =0L,
     @ColumnInfo(name = "step_date")
-    val stepDate : String = "",
+    val stepDate : Date = Date() ,
     @ColumnInfo(name = "step_count")
     val stepCount : Int = 0,
     @ColumnInfo(name = "step_goal")

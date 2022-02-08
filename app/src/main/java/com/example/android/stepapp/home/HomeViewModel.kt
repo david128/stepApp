@@ -35,6 +35,7 @@ class HomeViewModel (val database: DayDatabaseDao, application: Application): An
     init{
         _steps.value=0f;
         _max.value=1000f;
+        initDay()
     }
 
     private fun initDay(){
@@ -51,6 +52,7 @@ class HomeViewModel (val database: DayDatabaseDao, application: Application): An
         }
     }
 
+    //track the day's steps
     fun onStartTracking(){
         uiScope.launch {
             val newDay = DayData()
@@ -65,6 +67,7 @@ class HomeViewModel (val database: DayDatabaseDao, application: Application): An
         }
     }
 
+    //stop tracking this day
     fun onStopTracking(){
         uiScope.launch {
             val oldDay = thisDay.value?: return@launch
