@@ -8,6 +8,8 @@ import androidx.room.Update
 
 @Dao
 interface DayDatabaseDao {
+
+
     @Insert
     fun insert(day: DayData)
 

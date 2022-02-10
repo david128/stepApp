@@ -1,6 +1,7 @@
 package com.example.android.stepapp.database
 
 import androidx.room.TypeConverter
+import java.text.SimpleDateFormat
 import java.util.*
 
 class Converters {
@@ -14,4 +15,6 @@ class Converters {
     fun fromDate(date: Date?): Long? {
         return if (date == null)null else date.getTime()
     }
+
+
 }

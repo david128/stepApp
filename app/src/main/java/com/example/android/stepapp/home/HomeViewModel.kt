@@ -2,6 +2,7 @@ package com.example.android.stepapp.home
 
 import android.app.Application
 import androidx.lifecycle.*
+import com.example.android.stepapp.DateToString
 import com.example.android.stepapp.database.DayData
 import com.example.android.stepapp.database.DayDatabase
 import com.example.android.stepapp.database.DayDatabaseDao
@@ -19,6 +20,9 @@ class HomeViewModel (val database: DayDatabaseDao, application: Application): An
     private val _max = MutableLiveData<Float>()
     val max : LiveData<Float>
         get() = _max
+
+    val currDate = Calendar.getInstance()
+    val dts = DateToString()
 
     private var viewModelJob = Job()
 
@@ -38,6 +42,12 @@ class HomeViewModel (val database: DayDatabaseDao, application: Application): An
         initDay()
     }
 
+
+    fun nextDay( changeDate: Int){
+        currDate.add(Calendar.DATE, changeDate)
+        initDay()
+    }
+
     private fun initDay(){
         uiScope.launch {
             thisDay.value = getThisDayFromDatabase()
@@ -46,16 +56,17 @@ class HomeViewModel (val database: DayDatabaseDao, application: Application): An
 
     private suspend fun getThisDayFromDatabase(): DayData?{
         return withContext(Dispatchers.IO){
-            var day = database.getToday()
+            var day = database.getSpecificDay(dts.toSimpleString(currDate.time))
             //do check here
             day
         }
     }
 
     //track the day's steps
-    fun onStartTracking(){
+    fun onNewDay(){
         uiScope.launch {
             val newDay = DayData()
+            newDay.stepDate = dts.toSimpleString(currDate.time)
             insert(newDay)
             thisDay.value = getThisDayFromDatabase()
         }
@@ -68,8 +79,9 @@ class HomeViewModel (val database: DayDatabaseDao, application: Application): An
     }
 
     //stop tracking this day
-    fun onStopTracking(){
+    fun onUpdateSteps(){
         uiScope.launch {
+
             val oldDay = thisDay.value?: return@launch
             update(oldDay)
         }

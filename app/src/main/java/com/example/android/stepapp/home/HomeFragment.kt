@@ -8,10 +8,12 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.example.android.stepapp.DateToString
 import com.example.android.stepapp.R
 import com.example.android.stepapp.database.DayDatabase
 import com.example.android.stepapp.databinding.FragmentHomeBinding
-
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class HomeFragment : Fragment() {
@@ -34,6 +36,8 @@ class HomeFragment : Fragment() {
             false
         )
 
+        val dts = DateToString()
+
         //database set up
         val application = requireNotNull(this.activity).application
 
@@ -48,9 +52,19 @@ class HomeFragment : Fragment() {
 
 
 
+
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
         //initial update
 
+        //update day
+        binding.buttonPrev.setOnClickListener{
+            viewModel.nextDay(-1)
+            binding.topText.text = dts.toSimpleString(viewModel.currDate.time)
+        }
+        binding.buttonNext.setOnClickListener{
+            viewModel.nextDay(+1)
+            binding.topText.text = dts.toSimpleString(viewModel.currDate.time)
+        }
 
         binding.button2.setOnClickListener{viewModel.addStep()}
         binding.button3.setOnClickListener{viewModel.addStep()}

@@ -6,10 +6,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.android.stepapp.R
+import com.example.android.stepapp.addGoal.AddGoalFragment
+import com.example.android.stepapp.database.GoalDatabase
 import com.example.android.stepapp.databinding.FragmentGoalsBinding
 import com.example.android.stepapp.databinding.FragmentHomeBinding
+import com.example.android.stepapp.updateGoal.UpdateGoalFragment
 
 
 /**
@@ -20,15 +27,36 @@ import com.example.android.stepapp.databinding.FragmentHomeBinding
 class GoalsFragment : Fragment() {
 
 
-
+    private lateinit var viewModel: GoalsViewModel
+    private lateinit var addGoalFragment : AddGoalFragment
+    private lateinit var updateGoalFragment: UpdateGoalFragment
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,savedInstanceState: Bundle?)
     : View? {
         // Inflate the layout for this fragment
         val binding : FragmentGoalsBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_goals, container, false)
+        binding.floatingActionButton.setOnClickListener{
+
+            addGoalFragment= AddGoalFragment()
+            val transaction = getParentFragmentManager().beginTransaction()
+            transaction.replace(R.id.nav_host_fragment,addGoalFragment)
+            transaction.commit()
+
+        }
+
+        val application = requireNotNull(this.activity).application
+        val dataSource = GoalDatabase.getInstance(application).goalDatabaseDao
+        val viewModelFactory = GoalsViewModelFactory(dataSource, application)
+        viewModel= ViewModelProvider(this,viewModelFactory).get(GoalsViewModel::class.java)
+        val adapter = ListAdapter()
+        val recyclerView = binding.recycleGoalView
+        recyclerView.adapter= adapter
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
 
-
+        viewModel.readAllData.observe(viewLifecycleOwner, Observer { goal ->
+            adapter.setData(goal)
+        })
         return binding.root
     }
 
