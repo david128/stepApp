@@ -18,7 +18,7 @@ class ListAdapter(private val listener: OnGoalListner) :RecyclerView.Adapter<Lis
 
     private var goalList = emptyList<GoalData>()
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
-        View.OnClickListener {
+        View.OnClickListener,View.OnLongClickListener {
         val goalName: TextView
         val stepGoal: TextView
 
@@ -27,6 +27,7 @@ class ListAdapter(private val listener: OnGoalListner) :RecyclerView.Adapter<Lis
             goalName = itemView.findViewById(R.id.goal_name)
             stepGoal = itemView.findViewById(R.id.step_goal)
             itemView.setOnClickListener(this)
+            itemView.setOnLongClickListener(this)
         }
 
         override fun onClick(v: View?) {
@@ -37,12 +38,25 @@ class ListAdapter(private val listener: OnGoalListner) :RecyclerView.Adapter<Lis
             }
 
         }
+
+        override fun onLongClick(v: View?): Boolean {
+
+            if (adapterPosition != RecyclerView.NO_POSITION){
+                val id = goalList[adapterPosition].goalID
+                listener.onGoalLongClick(goalList[adapterPosition].GoalName)
+            }
+            return true
+        }
+
+
     }
 
 
 
     interface OnGoalListner{
         fun onGoalClick(id : Long, name: String, steps:Int)
+        fun onGoalLongClick( name: String)
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

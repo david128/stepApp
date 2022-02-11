@@ -45,6 +45,8 @@ class GoalsFragment : Fragment(), ListAdapter.OnGoalListner {
 
         }
 
+
+
         val application = requireNotNull(this.activity).application
         val dataSource = GoalDatabase.getInstance(application).goalDatabaseDao
         val viewModelFactory = GoalsViewModelFactory(dataSource, application)
@@ -69,6 +71,11 @@ class GoalsFragment : Fragment(), ListAdapter.OnGoalListner {
         val transaction = getParentFragmentManager().beginTransaction()
         transaction.replace(R.id.nav_host_fragment,updateGoalFragment)
         transaction.commit()
+    }
+
+    override fun onGoalLongClick(name: String) {
+        Toast.makeText(requireContext(), "Long click detected", Toast.LENGTH_SHORT).show()
+
     }
 
 

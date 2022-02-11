@@ -4,13 +4,13 @@ import android.app.Application
 import androidx.lifecycle.*
 import com.example.android.stepapp.DateToString
 import com.example.android.stepapp.database.DayData
-import com.example.android.stepapp.database.DayDatabase
 import com.example.android.stepapp.database.DayDatabaseDao
+import com.example.android.stepapp.database.GoalData
+import com.example.android.stepapp.database.GoalDatabaseDao
 import kotlinx.coroutines.*
-import java.text.SimpleDateFormat
 import java.util.*
 
-class HomeViewModel (val database: DayDatabaseDao, application: Application): AndroidViewModel(application) {
+class HomeViewModel (val dayDatabaseDao: DayDatabaseDao,val goalDatabaseDao: GoalDatabaseDao, application: Application): AndroidViewModel(application) {
 
 
     private val _steps = MutableLiveData<Float>()
@@ -24,6 +24,8 @@ class HomeViewModel (val database: DayDatabaseDao, application: Application): An
     val currDate = Calendar.getInstance()
     val dts = DateToString()
 
+    val allGoals : LiveData<List<GoalData>>
+
     private var viewModelJob = Job()
 
     override fun onCleared(){
@@ -33,12 +35,13 @@ class HomeViewModel (val database: DayDatabaseDao, application: Application): An
 
     private val uiScope = CoroutineScope(Dispatchers.Main+viewModelJob)
     private var thisDay = MutableLiveData<DayData?>()
-    private val days = database.getAllDays()
+    private val days = dayDatabaseDao.getAllDays()
     //val dayString = Transformations.map(days){days -> formatDays(days,application.resources)    }
 
     init{
         _steps.value=0f;
         _max.value=1000f;
+        allGoals = goalDatabaseDao.getAllGoals()
         initDay()
 
     }
@@ -57,7 +60,7 @@ class HomeViewModel (val database: DayDatabaseDao, application: Application): An
 
     private suspend fun getThisDayFromDatabase(): DayData?{
         return withContext(Dispatchers.IO){
-            var day = database.getSpecificDay(dts.toSimpleString(currDate.time))
+            var day = dayDatabaseDao.getSpecificDay(dts.toSimpleString(currDate.time))
             //do check here
             day
         }
@@ -75,7 +78,7 @@ class HomeViewModel (val database: DayDatabaseDao, application: Application): An
 
     private suspend fun  insert(day: DayData){
         withContext(Dispatchers.IO){
-            database.insert(day)
+            dayDatabaseDao.insert(day)
         }
     }
 
@@ -90,7 +93,7 @@ class HomeViewModel (val database: DayDatabaseDao, application: Application): An
 
     private suspend fun update (day:DayData){
         withContext(Dispatchers.IO){
-            database.update(day)
+            dayDatabaseDao.update(day)
         }
     }
 
