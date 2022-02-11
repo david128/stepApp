@@ -40,6 +40,7 @@ class HomeViewModel (val database: DayDatabaseDao, application: Application): An
         _steps.value=0f;
         _max.value=1000f;
         initDay()
+
     }
 
 

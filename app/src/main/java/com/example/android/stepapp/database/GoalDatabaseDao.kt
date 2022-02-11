@@ -16,13 +16,13 @@ interface GoalDatabaseDao {
     @Update
     fun update(goal: GoalData)
 
-    @Query(value = "SELECT * FROM goal_table WHERE goalID = :key")
+    @Query("SELECT * FROM goal_table WHERE goalID = :key")
     fun get(key:Long) : GoalData
 
     @Query(value = "DELETE FROM goal_table")
     fun clear()
 
-    @Query(value="SELECT * FROM goal_table ORDER BY goalID DESC")
+    @Query("SELECT * FROM goal_table ORDER BY goalID DESC")
     fun getAllGoals() : LiveData<List<GoalData>>
 
 

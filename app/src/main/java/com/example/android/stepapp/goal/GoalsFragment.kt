@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
@@ -24,7 +25,7 @@ import com.example.android.stepapp.updateGoal.UpdateGoalFragment
  * Use the [GoalsFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class GoalsFragment : Fragment() {
+class GoalsFragment : Fragment(), ListAdapter.OnGoalListner {
 
 
     private lateinit var viewModel: GoalsViewModel
@@ -48,7 +49,7 @@ class GoalsFragment : Fragment() {
         val dataSource = GoalDatabase.getInstance(application).goalDatabaseDao
         val viewModelFactory = GoalsViewModelFactory(dataSource, application)
         viewModel= ViewModelProvider(this,viewModelFactory).get(GoalsViewModel::class.java)
-        val adapter = ListAdapter()
+        val adapter = ListAdapter(this)
         val recyclerView = binding.recycleGoalView
         recyclerView.adapter= adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -57,7 +58,17 @@ class GoalsFragment : Fragment() {
         viewModel.readAllData.observe(viewLifecycleOwner, Observer { goal ->
             adapter.setData(goal)
         })
+
+
         return binding.root
+    }
+
+    override fun onGoalClick(id : Long, name: String, steps:Int) {
+
+        updateGoalFragment = UpdateGoalFragment().newInstance(id,name,steps)!!
+        val transaction = getParentFragmentManager().beginTransaction()
+        transaction.replace(R.id.nav_host_fragment,updateGoalFragment)
+        transaction.commit()
     }
 
 
