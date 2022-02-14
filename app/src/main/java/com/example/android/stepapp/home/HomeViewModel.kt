@@ -1,6 +1,7 @@
 package com.example.android.stepapp.home
 
 import android.app.Application
+import android.widget.Toast
 import androidx.lifecycle.*
 import com.example.android.stepapp.DateToString
 import com.example.android.stepapp.database.DayData
@@ -53,9 +54,27 @@ class HomeViewModel (val dayDatabaseDao: DayDatabaseDao,val goalDatabaseDao: Goa
     }
 
     private fun initDay(){
-        uiScope.launch {
+        //check if this day is in the db
+        var exist :Boolean = false
+/*        uiScope.launch {
             thisDay.value = getThisDayFromDatabase()
+        }*/
+        viewModelScope.launch {
+            exist = doesDayExist()
         }
+        if (!exist)
+        {
+            onNewDay()
+        }
+
+
+    }
+
+    private suspend fun doesDayExist(): Boolean{
+
+        return dayDatabaseDao.doesDayExist(dts.toSimpleString(currDate.time))
+
+
     }
 
     private suspend fun getThisDayFromDatabase(): DayData?{
@@ -66,13 +85,13 @@ class HomeViewModel (val dayDatabaseDao: DayDatabaseDao,val goalDatabaseDao: Goa
         }
     }
 
-    //track the day's steps
+    //add to db
     fun onNewDay(){
+        val newDay = DayData()
+        newDay.stepDate = dts.toSimpleString(currDate.time)
         uiScope.launch {
-            val newDay = DayData()
-            newDay.stepDate = dts.toSimpleString(currDate.time)
+
             insert(newDay)
-            thisDay.value = getThisDayFromDatabase()
         }
     }
 

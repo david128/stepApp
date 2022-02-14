@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 
+
 @Dao
 interface DayDatabaseDao {
 
@@ -27,6 +28,9 @@ interface DayDatabaseDao {
 
     @Query(value="SELECT * FROM day_table ORDER BY dayID DESC LIMIT 1")
     fun getToday() : DayData?
+
+    @Query("SELECT EXISTS(SELECT * FROM day_table WHERE step_date == :queryDate)")
+    suspend fun doesDayExist(queryDate:String) : Boolean
 
     @Query(value="SELECT * FROM day_table  WHERE step_date = :queryDate")
     fun getSpecificDay(queryDate:String ) : DayData?

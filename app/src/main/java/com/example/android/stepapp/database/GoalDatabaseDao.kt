@@ -19,7 +19,7 @@ interface GoalDatabaseDao {
     @Query("SELECT * FROM goal_table WHERE goalID = :key")
     fun get(key:Long) : GoalData
 
-    @Query(value = "DELETE FROM goal_table")
+    @Query("DELETE FROM goal_table")
     fun clear()
 
     @Query("SELECT * FROM goal_table ORDER BY goalID DESC")

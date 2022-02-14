@@ -27,8 +27,6 @@ class HomeFragment : Fragment() {
 
     private lateinit var viewModel : HomeViewModel
 
-
-
     private lateinit var binding: FragmentHomeBinding
 
     override fun onCreateView(
@@ -66,6 +64,7 @@ class HomeFragment : Fragment() {
 
         //update day
         binding.buttonPrev.setOnClickListener{
+            viewModel.onNewDay()
             viewModel.nextDay(-1)
             binding.topText.text = dts.toSimpleString(viewModel.currDate.time)
         }
