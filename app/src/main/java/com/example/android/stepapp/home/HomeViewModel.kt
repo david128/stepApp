@@ -18,6 +18,10 @@ class HomeViewModel (val dayDatabaseDao: DayDatabaseDao,val goalDatabaseDao: Goa
     val steps : LiveData<Float>
         get() = _steps
 
+    private val _addAmount = MutableLiveData<Float>()
+    val addAmount : LiveData<Float>
+        get() = _addAmount
+
     private val _max = MutableLiveData<Float>()
     val max : LiveData<Float>
         get() = _max
@@ -55,26 +59,24 @@ class HomeViewModel (val dayDatabaseDao: DayDatabaseDao,val goalDatabaseDao: Goa
 
     private fun initDay(){
         //check if this day is in the db
+        _addAmount.value= 100f
+
         var exist :Boolean = false
-/*        uiScope.launch {
-            thisDay.value = getThisDayFromDatabase()
-        }*/
         viewModelScope.launch {
             exist = doesDayExist()
         }
+
+        //if day doesnt exist in db, create it
         if (!exist)
         {
             onNewDay()
         }
 
-
     }
 
+    //function to check if given date is in db
     private suspend fun doesDayExist(): Boolean{
-
         return dayDatabaseDao.doesDayExist(dts.toSimpleString(currDate.time))
-
-
     }
 
     private suspend fun getThisDayFromDatabase(): DayData?{
@@ -118,6 +120,8 @@ class HomeViewModel (val dayDatabaseDao: DayDatabaseDao,val goalDatabaseDao: Goa
 
 
     fun addStep(){
-        _steps.value = (steps.value)?.plus(1)
+        _steps.value = (steps.value)?.plus((_addAmount.value!!))
     }
+
+
 }

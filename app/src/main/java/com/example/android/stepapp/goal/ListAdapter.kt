@@ -11,7 +11,7 @@ import com.example.android.stepapp.R
 
 import androidx.fragment.app.FragmentTransaction
 import com.example.android.stepapp.addGoal.AddGoalFragment
-import com.example.android.stepapp.generated.callback.OnClickListener
+
 
 
 class ListAdapter(private val listener: OnGoalListner) :RecyclerView.Adapter<ListAdapter.ViewHolder>(){

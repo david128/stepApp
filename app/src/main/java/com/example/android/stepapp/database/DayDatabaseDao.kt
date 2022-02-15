@@ -29,7 +29,7 @@ interface DayDatabaseDao {
     @Query(value="SELECT * FROM day_table ORDER BY dayID DESC LIMIT 1")
     fun getToday() : DayData?
 
-    @Query("SELECT EXISTS(SELECT * FROM day_table WHERE step_date == :queryDate)")
+    @Query("SELECT EXISTS(SELECT * FROM day_table WHERE step_date = :queryDate)")
     suspend fun doesDayExist(queryDate:String) : Boolean
 
     @Query(value="SELECT * FROM day_table  WHERE step_date = :queryDate")

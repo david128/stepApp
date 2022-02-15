@@ -69,19 +69,23 @@ class HomeFragment : Fragment() {
             binding.topText.text = dts.toSimpleString(viewModel.currDate.time)
         }
         binding.buttonNext.setOnClickListener{
+            viewModel.onNewDay()
             viewModel.nextDay(+1)
             binding.topText.text = dts.toSimpleString(viewModel.currDate.time)
         }
 
-        binding.button2.setOnClickListener{viewModel.addStep()}
-        binding.button3.setOnClickListener{viewModel.addStep()}
+
         binding.button4.setOnClickListener{viewModel.addStep()}
+
 
         viewModel.steps.observe(this, Observer {newSteps ->
             binding.circularProgressBar.progress=newSteps
+            binding.percentage.setText(getPercentage(newSteps,(viewModel.max.value ?: 0.0f)).toString() + "%")
+
         })
         viewModel.max.observe(this, Observer {newMax ->
             binding.circularProgressBar.progressMax=newMax
+            binding.percentage.setText(getPercentage((viewModel.steps.value ?: 0.0f), newMax).toString() + "%")
         })
 
 
@@ -92,6 +96,9 @@ class HomeFragment : Fragment() {
     }
 
 
+    fun getPercentage(steps: Float, max: Float) : Int{
+        return (steps/max *100f).toInt()
+    }
 
 
 

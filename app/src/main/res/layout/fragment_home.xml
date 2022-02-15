@@ -24,23 +24,6 @@
             app:layout_constraintTop_toTopOf="parent">
 
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toTopOf="@+id/top_text"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
-
-                <AutoCompleteTextView
-                    android:id="@+id/autoCompleteTextView2"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:inputType="none"
-                    android:text="" />
-            </com.google.android.material.textfield.TextInputLayout>
-
             <TextView
                 android:id="@+id/top_text"
                 android:layout_width="wrap_content"
@@ -54,6 +37,7 @@
                 />
 
             <LinearLayout
+                android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
@@ -89,6 +73,16 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent" />
 
+            <TextView
+                android:id="@+id/percentage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="10%"
+                app:layout_constraintBottom_toBottomOf="@+id/circularProgressBar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/circularProgressBar" />
+
             <LinearLayout
                 android:id="@+id/buttons_layout"
                 android:layout_width="match_parent"
@@ -99,24 +93,17 @@
                 app:layout_constraintTop_toBottomOf="@+id/circularProgressBar">
 
 
-                <Button
-                    android:id="@+id/button2"
-                    android:layout_width="wrap_content"
+                <EditText
+                    android:id="@+id/editTextNumber2"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="+10"
-                    android:onClick="@{() -> homeTrackerViewModel.onUpdateSteps()}"/>
-
-                <Button
-                    android:id="@+id/button3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="+100" />
+                    android:ems="10"
+                    android:inputType="number" />
 
                 <Button
                     android:id="@+id/button4"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="+500" />
