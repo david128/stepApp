@@ -94,7 +94,7 @@
 
 
                 <EditText
-                    android:id="@+id/editTextNumber2"
+                    android:id="@+id/add_amount_edit_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -102,11 +102,11 @@
                     android:inputType="number" />
 
                 <Button
-                    android:id="@+id/button4"
+                    android:id="@+id/add_steps_button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="+500" />
+                    android:text="+100" />
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 

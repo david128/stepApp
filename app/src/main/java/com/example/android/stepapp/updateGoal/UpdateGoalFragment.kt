@@ -49,6 +49,7 @@ class UpdateGoalFragment : Fragment() {
         val binding : FragmentUpdateGoalBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_update_goal, container, false)
 
 
+
         val application = requireNotNull(this.activity).application
         val dataSource = GoalDatabase.getInstance(application).goalDatabaseDao
         val viewModelFactory = UpdateGoalViewModelFactory(dataSource, application)

@@ -1,10 +1,7 @@
 package com.example.android.stepapp.database
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Update
+import androidx.room.*
 
 @Dao
 interface GoalDatabaseDao {
@@ -15,6 +12,9 @@ interface GoalDatabaseDao {
 
     @Update
     fun update(goal: GoalData)
+
+    @Delete
+    suspend fun deleteGoal(goal:GoalData)
 
     @Query("SELECT * FROM goal_table WHERE goalID = :key")
     fun get(key:Long) : GoalData

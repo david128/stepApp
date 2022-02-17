@@ -11,7 +11,7 @@ import com.example.android.stepapp.R
 
 import androidx.fragment.app.FragmentTransaction
 import com.example.android.stepapp.addGoal.AddGoalFragment
-
+import com.example.android.stepapp.database.DayData
 
 
 class ListAdapter(private val listener: OnGoalListner) :RecyclerView.Adapter<ListAdapter.ViewHolder>(){
@@ -24,8 +24,8 @@ class ListAdapter(private val listener: OnGoalListner) :RecyclerView.Adapter<Lis
 
         init {
             // Define click listener for the ViewHolder's View.
-            goalName = itemView.findViewById(R.id.goal_name)
-            stepGoal = itemView.findViewById(R.id.step_goal)
+            goalName = itemView.findViewById(R.id.goal_row_goal_name)
+            stepGoal = itemView.findViewById(R.id.goal_row_step_goal)
             itemView.setOnClickListener(this)
             itemView.setOnLongClickListener(this)
         }
@@ -70,6 +70,11 @@ class ListAdapter(private val listener: OnGoalListner) :RecyclerView.Adapter<Lis
 
 
 
+    }
+
+    fun getItem(position: Int) : GoalData{
+
+        return goalList[position]
     }
 
     override fun getItemCount(): Int {

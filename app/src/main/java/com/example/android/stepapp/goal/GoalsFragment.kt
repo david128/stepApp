@@ -11,7 +11,9 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.android.stepapp.R
 import com.example.android.stepapp.addGoal.AddGoalFragment
 import com.example.android.stepapp.database.GoalDatabase
@@ -56,6 +58,20 @@ class GoalsFragment : Fragment(), ListAdapter.OnGoalListner {
         recyclerView.adapter= adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
+        //delete functionality
+        val swipeToDeleteCallback = object : SwipeToDeleteCallback(){
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val pos = viewHolder.adapterPosition
+                //remove item
+                viewModel.deleteGoal(adapter.getItem(pos))
+                recyclerView.adapter?.notifyItemRemoved(pos)
+
+            }
+        }
+
+        //touch helper for swipe to delete
+        val itemTouchHelper = ItemTouchHelper(swipeToDeleteCallback)
+        itemTouchHelper.attachToRecyclerView(recyclerView)
 
         viewModel.readAllData.observe(viewLifecycleOwner, Observer { goal ->
             adapter.setData(goal)

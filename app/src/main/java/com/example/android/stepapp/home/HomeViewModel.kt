@@ -1,7 +1,6 @@
 package com.example.android.stepapp.home
 
 import android.app.Application
-import android.widget.Toast
 import androidx.lifecycle.*
 import com.example.android.stepapp.DateToString
 import com.example.android.stepapp.database.DayData
@@ -18,8 +17,8 @@ class HomeViewModel (val dayDatabaseDao: DayDatabaseDao,val goalDatabaseDao: Goa
     val steps : LiveData<Float>
         get() = _steps
 
-    private val _addAmount = MutableLiveData<Float>()
-    val addAmount : LiveData<Float>
+    private val _addAmount = MutableLiveData<Int>()
+    val addAmount : LiveData<Int>
         get() = _addAmount
 
     private val _max = MutableLiveData<Float>()
@@ -39,8 +38,10 @@ class HomeViewModel (val dayDatabaseDao: DayDatabaseDao,val goalDatabaseDao: Goa
     }
 
     private val uiScope = CoroutineScope(Dispatchers.Main+viewModelJob)
-    private var thisDay = MutableLiveData<DayData?>()
-    private val days = dayDatabaseDao.getAllDays()
+    private var _thisDay = MutableLiveData<DayData?>()
+    val thisDay : LiveData<DayData?>
+        get() = _thisDay
+    //private val days = dayDatabaseDao.getAllDays()
     //val dayString = Transformations.map(days){days -> formatDays(days,application.resources)    }
 
     init{
@@ -59,18 +60,22 @@ class HomeViewModel (val dayDatabaseDao: DayDatabaseDao,val goalDatabaseDao: Goa
 
     private fun initDay(){
         //check if this day is in the db
-        _addAmount.value= 100f
+        _addAmount.value= 100
 
         var exist :Boolean = false
         viewModelScope.launch {
             exist = doesDayExist()
+
+            //if day doesnt exist in db, create it
+            if (!exist)
+            {
+                onNewDay()
+            }
+            //get this day
+            _thisDay.value = getThisDayFromDatabase()
+
         }
 
-        //if day doesnt exist in db, create it
-        if (!exist)
-        {
-            onNewDay()
-        }
 
     }
 
@@ -91,8 +96,7 @@ class HomeViewModel (val dayDatabaseDao: DayDatabaseDao,val goalDatabaseDao: Goa
     fun onNewDay(){
         val newDay = DayData()
         newDay.stepDate = dts.toSimpleString(currDate.time)
-        uiScope.launch {
-
+        viewModelScope.launch {
             insert(newDay)
         }
     }
@@ -104,11 +108,9 @@ class HomeViewModel (val dayDatabaseDao: DayDatabaseDao,val goalDatabaseDao: Goa
     }
 
     //stop tracking this day
-    fun onUpdateSteps(){
-        uiScope.launch {
-
-            val oldDay = thisDay.value?: return@launch
-            update(oldDay)
+    fun onUpdateDay(day : DayData){
+        viewModelScope.launch {
+            update(day)
         }
     }
 
@@ -120,8 +122,24 @@ class HomeViewModel (val dayDatabaseDao: DayDatabaseDao,val goalDatabaseDao: Goa
 
 
     fun addStep(){
-        _steps.value = (steps.value)?.plus((_addAmount.value!!))
+        //_steps.value = (steps.value)?.plus(_(addAmount.value!!))
+        //_thisDay.value?.stepCount = thisDay.value?.stepCount?.plus((addAmount.value!!))!!
+        val updatedDay = DayData()
+
+        updatedDay.stepCount = _thisDay.value?.stepCount?.plus((addAmount.value!!))!!
+        updatedDay.dayID= _thisDay.value!!.dayID
+        updatedDay.stepDate= _thisDay.value!!.stepDate
+        updatedDay.stepGoal= _thisDay.value!!.stepCount
+
+        _thisDay.value = updatedDay
+        onUpdateDay(updatedDay)
+
+
+
     }
 
+    fun changeAddAmount(newAmount : Int){
+        _addAmount.value= newAmount
+    }
 
 }
