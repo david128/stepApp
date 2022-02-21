@@ -104,18 +104,12 @@ class HomeFragment : Fragment() {
             }
 
         })
-//        viewModel.steps.observe(this, Observer {newSteps ->
-//            binding.circularProgressBar.progress=newSteps
-//            binding.percentage.setText(getPercentage(newSteps,(viewModel.max.value ?: 0.0f)).toString() + "%")
-//
-//        })
+
 
         viewModel.max.observe(this, Observer {newMax ->
             binding.circularProgressBar.progressMax=newMax
             binding.percentage.setText(getPercentage((viewModel.steps.value ?: 0.0f), newMax).toString() + "%")
         })
-
-
 
 
 

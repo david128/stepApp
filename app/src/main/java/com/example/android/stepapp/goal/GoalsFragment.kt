@@ -35,7 +35,7 @@ class GoalsFragment : Fragment(), ListAdapter.OnGoalListner {
 
 
     private lateinit var viewModel: GoalsViewModel
-    private lateinit var updateGoalFragment: UpdateGoalFragment
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,savedInstanceState: Bundle?)
     : View? {
@@ -85,13 +85,8 @@ class GoalsFragment : Fragment(), ListAdapter.OnGoalListner {
     override fun onGoalClick(goal : GoalData) {
 
         val action = GoalsFragmentDirections.actionGoalsFragment2ToUpdateGoalFragment(goal)
-
         findNavController().navigate(action)
-        //delete:
-//        updateGoalFragment = UpdateGoalFragment().newInstance(id,name,steps)!!
-//        val transaction = getParentFragmentManager().beginTransaction()
-//        transaction.replace(R.id.nav_host_fragment,updateGoalFragment)
-//        transaction.commit()
+
     }
 
     override fun onGoalLongClick(name: String) {

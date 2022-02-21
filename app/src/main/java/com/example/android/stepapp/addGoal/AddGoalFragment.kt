@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.android.stepapp.R
 import com.example.android.stepapp.database.DayDatabase
 import com.example.android.stepapp.database.GoalData
@@ -25,7 +26,7 @@ import com.example.android.stepapp.home.HomeViewModelFactory
 class AddGoalFragment : Fragment() {
 
     private lateinit var addGoalViewModel : AddGoalViewModel
-    private lateinit var goalsFragment : GoalsFragment
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -57,12 +58,8 @@ class AddGoalFragment : Fragment() {
             goal.GoalName =goalName
             goal.stepGoal = Integer.parseInt(stepGoal.toString())
             addGoalViewModel.addGoal(goal)
-            Toast.makeText(requireContext(),"Added", Toast.LENGTH_LONG).show()
             //Now added, navigate back
-            goalsFragment = GoalsFragment()
-            val transaction = getParentFragmentManager().beginTransaction()
-            transaction.replace(R.id.nav_host_fragment,goalsFragment)
-            transaction.commit()
+            findNavController().navigate(R.id.action_addGoalFragment_to_goalsFragment)
 
         }
     }

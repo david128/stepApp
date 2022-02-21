@@ -11,7 +11,11 @@
     <fragment
         android:id="@+id/addGoalFragment"
         android:name="com.example.android.stepapp.addGoal.AddGoalFragment"
-        android:label="AddGoalFragment" />
+        android:label="AddGoalFragment" >
+        <action
+            android:id="@+id/action_addGoalFragment_to_goalsFragment"
+            app:destination="@id/goalsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/goalsFragment"
         android:name="com.example.android.stepapp.goal.GoalsFragment"
