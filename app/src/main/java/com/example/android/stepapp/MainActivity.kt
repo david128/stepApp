@@ -5,18 +5,21 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.navigateUp
+import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.android.stepapp.goal.GoalsFragment
 import com.example.android.stepapp.history.HistoryFragment
 import com.example.android.stepapp.home.HomeFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
-private val homeFragment = HomeFragment()
-private val historyFragment = HistoryFragment()
-private val goalsFragment = GoalsFragment()
 
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var appBarConfig: AppBarConfiguration
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -26,24 +29,14 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment)
         bottom_nav.setupWithNavController(navController)
 
-//        bottom_nav.setOnItemSelectedListener {
-//            when(it.itemId){
-//                R.id.mainFrag -> replaceFragment(homeFragment)
-//                R.id.goalsFragment -> replaceFragment(goalsFragment)
-//                R.id.historyFragment-> replaceFragment(historyFragment)
-//            }
-//            true
-//        }
+        appBarConfig = AppBarConfiguration(navController.graph)
+        setupActionBarWithNavController(navController, appBarConfig)
 
     }
 
-    fun replaceFragment(fragment: Fragment){
-        if (fragment!=null){
-            val transaction = supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.nav_host_fragment,fragment)
-            transaction.commit()
-        }
-
+    override fun onSupportNavigateUp(): Boolean {
+        val navController = findNavController(R.id.nav_host_fragment)
+        return navController.navigateUp(appBarConfig) || super.onSupportNavigateUp()
     }
 
 }
