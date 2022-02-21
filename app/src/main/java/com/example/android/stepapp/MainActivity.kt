@@ -4,6 +4,8 @@ package com.example.android.stepapp
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
+import androidx.navigation.ui.setupWithNavController
 import com.example.android.stepapp.goal.GoalsFragment
 import com.example.android.stepapp.history.HistoryFragment
 import com.example.android.stepapp.home.HomeFragment
@@ -18,17 +20,20 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        replaceFragment(homeFragment)
+        //replaceFragment(homeFragment)
 
         val bottom_nav = findViewById<BottomNavigationView>(R.id.bottom_nav)
-        bottom_nav.setOnItemSelectedListener {
-            when(it.itemId){
-                R.id.mainFrag -> replaceFragment(homeFragment)
-                R.id.goalsFragment -> replaceFragment(goalsFragment)
-                R.id.historyFragment-> replaceFragment(historyFragment)
-            }
-            true
-        }
+        val navController = findNavController(R.id.nav_host_fragment)
+        bottom_nav.setupWithNavController(navController)
+
+//        bottom_nav.setOnItemSelectedListener {
+//            when(it.itemId){
+//                R.id.mainFrag -> replaceFragment(homeFragment)
+//                R.id.goalsFragment -> replaceFragment(goalsFragment)
+//                R.id.historyFragment-> replaceFragment(historyFragment)
+//            }
+//            true
+//        }
 
     }
 
