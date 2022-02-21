@@ -34,7 +34,7 @@ class ListAdapter(private val listener: OnGoalListner) :RecyclerView.Adapter<Lis
 
             if (adapterPosition != RecyclerView.NO_POSITION){
                 val id = goalList[adapterPosition].goalID
-                listener.onGoalClick(id,goalList[adapterPosition].GoalName,goalList[adapterPosition].stepGoal )
+                listener.onGoalClick(goalList[adapterPosition])
             }
 
         }
@@ -54,7 +54,7 @@ class ListAdapter(private val listener: OnGoalListner) :RecyclerView.Adapter<Lis
 
 
     interface OnGoalListner{
-        fun onGoalClick(id : Long, name: String, steps:Int)
+        fun onGoalClick(goal:GoalData)
         fun onGoalLongClick( name: String)
 
     }

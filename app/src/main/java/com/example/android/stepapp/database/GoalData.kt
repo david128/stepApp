@@ -4,8 +4,10 @@ import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import androidx.versionedparcelable.ParcelField
+import kotlinx.parcelize.Parcelize
 
-
+@Parcelize
 @Entity(tableName = "goal_table")
 data class GoalData(
     @PrimaryKey(autoGenerate = true)
@@ -14,4 +16,4 @@ data class GoalData(
     var GoalName : String = "" ,
     @ColumnInfo(name = "goal_target")
     var stepGoal : Int = 0
-)
+) : Parcelable

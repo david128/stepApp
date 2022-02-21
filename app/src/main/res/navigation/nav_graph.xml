@@ -30,5 +30,12 @@
     <fragment
         android:id="@+id/updateGoalFragment"
         android:name="com.example.android.stepapp.updateGoal.UpdateGoalFragment"
-        android:label="UpdateGoalFragment" />
+        android:label="UpdateGoalFragment" >
+        <argument
+            android:name="currentGoal"
+            app:argType="com.example.android.stepapp.database.GoalData" />
+        <action
+            android:id="@+id/action_updateGoalFragment_to_goalsFragment"
+            app:destination="@id/goalsFragment" />
+    </fragment>
 </navigation>

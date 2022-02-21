@@ -10,12 +10,16 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android.stepapp.R
 import com.example.android.stepapp.addGoal.AddGoalFragment
+import com.example.android.stepapp.database.GoalData
 import com.example.android.stepapp.database.GoalDatabase
 import com.example.android.stepapp.databinding.FragmentGoalsBinding
 import com.example.android.stepapp.databinding.FragmentHomeBinding
@@ -31,7 +35,6 @@ class GoalsFragment : Fragment(), ListAdapter.OnGoalListner {
 
 
     private lateinit var viewModel: GoalsViewModel
-    private lateinit var addGoalFragment : AddGoalFragment
     private lateinit var updateGoalFragment: UpdateGoalFragment
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,savedInstanceState: Bundle?)
@@ -39,13 +42,11 @@ class GoalsFragment : Fragment(), ListAdapter.OnGoalListner {
         // Inflate the layout for this fragment
         val binding : FragmentGoalsBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_goals, container, false)
         binding.floatingActionButton.setOnClickListener{
-
-            addGoalFragment= AddGoalFragment()
-            val transaction = getParentFragmentManager().beginTransaction()
-            transaction.replace(R.id.nav_host_fragment,addGoalFragment)
-            transaction.commit()
+            findNavController().navigate(R.id.action_goalsFragment2_to_addGoalFragment)
 
         }
+
+
 
 
 
@@ -81,12 +82,16 @@ class GoalsFragment : Fragment(), ListAdapter.OnGoalListner {
         return binding.root
     }
 
-    override fun onGoalClick(id : Long, name: String, steps:Int) {
+    override fun onGoalClick(goal : GoalData) {
 
-        updateGoalFragment = UpdateGoalFragment().newInstance(id,name,steps)!!
-        val transaction = getParentFragmentManager().beginTransaction()
-        transaction.replace(R.id.nav_host_fragment,updateGoalFragment)
-        transaction.commit()
+        val action = GoalsFragmentDirections.actionGoalsFragment2ToUpdateGoalFragment(goal)
+
+        findNavController().navigate(action)
+        //delete:
+//        updateGoalFragment = UpdateGoalFragment().newInstance(id,name,steps)!!
+//        val transaction = getParentFragmentManager().beginTransaction()
+//        transaction.replace(R.id.nav_host_fragment,updateGoalFragment)
+//        transaction.commit()
     }
 
     override fun onGoalLongClick(name: String) {
