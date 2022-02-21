@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.android.stepapp.home.HomeFragment"
+        android:label="HomeFragment" />
+    <fragment
+        android:id="@+id/addGoalFragment"
+        android:name="com.example.android.stepapp.addGoal.AddGoalFragment"
+        android:label="AddGoalFragment" >
+        <action
+            android:id="@+id/action_addGoalFragment_to_goalsFragment"
+            app:destination="@id/goalsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/goalsFragment"
+        android:name="com.example.android.stepapp.goal.GoalsFragment"
+        android:label="GoalsFragment" >
+        <action
+            android:id="@+id/action_goalsFragment2_to_updateGoalFragment"
+            app:destination="@id/updateGoalFragment" />
+        <action
+            android:id="@+id/action_goalsFragment2_to_addGoalFragment"
+            app:destination="@id/addGoalFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/historyFragment"
+        android:name="com.example.android.stepapp.history.HistoryFragment"
+        android:label="HistoryFragment" />
+    <fragment
+        android:id="@+id/updateGoalFragment"
+        android:name="com.example.android.stepapp.updateGoal.UpdateGoalFragment"
+        android:label="UpdateGoalFragment" >
+        <argument
+            android:name="currentGoal"
+            app:argType="com.example.android.stepapp.database.GoalData" />
+        <action
+            android:id="@+id/action_updateGoalFragment_to_goalsFragment"
+            app:destination="@id/goalsFragment" />
+    </fragment>
+</navigation>

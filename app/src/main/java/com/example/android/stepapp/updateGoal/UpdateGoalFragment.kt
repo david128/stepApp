@@ -10,6 +10,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.example.android.stepapp.R
 import com.example.android.stepapp.addGoal.AddGoalFragment
 import com.example.android.stepapp.database.GoalData
@@ -24,18 +26,7 @@ class UpdateGoalFragment : Fragment() {
 
 
     private lateinit var viewModel: UpdateGoalViewModel
-
-    fun newInstance(id:Long, name: String, steps: Int): UpdateGoalFragment? {
-        val fragment = UpdateGoalFragment()
-        val args = Bundle()
-        args.putLong("id", id)
-        args.putString("name", name)
-        args.putInt("steps", steps)
-
-
-        fragment.setArguments(args)
-        return fragment
-    }
+    private val args by navArgs<UpdateGoalFragmentArgs>()
 
 
     override fun onCreateView(
@@ -44,20 +35,17 @@ class UpdateGoalFragment : Fragment() {
     ): View? {
 
 
-
-
         val binding : FragmentUpdateGoalBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_update_goal, container, false)
-
 
 
         val application = requireNotNull(this.activity).application
         val dataSource = GoalDatabase.getInstance(application).goalDatabaseDao
         val viewModelFactory = UpdateGoalViewModelFactory(dataSource, application)
         viewModel= ViewModelProvider(this,viewModelFactory).get(UpdateGoalViewModel::class.java)
-        viewModel.setID(arguments!!.getLong("id", 0))
 
-        binding.updateTextGoalName.setText( arguments!!.getString("name", ""))
-        binding.updateTextNumber.setText(arguments!!.getInt("steps", 0).toString())
+
+        binding.updateTextGoalName.setText( args.currentGoal.GoalName)
+        binding.updateTextNumber.setText(args.currentGoal.stepGoal.toString())
 
         binding.updateGoalButton.setOnClickListener{
             updateGoal(binding.updateTextGoalName.text.toString(), binding.updateTextNumber.text)
@@ -71,12 +59,14 @@ class UpdateGoalFragment : Fragment() {
         if (inputCheck(name,steps)){
             //create goal
             val updatedGoal = GoalData()
-            updatedGoal.goalID = arguments!!.getLong("id", 0L)
+            updatedGoal.goalID = args.currentGoal.goalID
             updatedGoal.GoalName = name
             updatedGoal.stepGoal = Integer.parseInt(steps.toString())
-            Toast.makeText(requireContext(),"Updated", Toast.LENGTH_LONG).show()
+
             //update current goal
             viewModel.onUpdateGoal(updatedGoal)
+            findNavController().navigate(R.id.action_updateGoalFragment_to_goalsFragment)
+
 
         }
 
