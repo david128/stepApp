@@ -7,20 +7,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.android.stepapp.R
-import com.example.android.stepapp.database.DayDatabase
 import com.example.android.stepapp.database.GoalData
 import com.example.android.stepapp.database.GoalDatabase
-import com.example.android.stepapp.database.GoalDatabaseDao
 import com.example.android.stepapp.databinding.FragmentAddGoalBinding
-import com.example.android.stepapp.databinding.FragmentGoalsBinding
-import com.example.android.stepapp.goal.GoalsFragment
-import com.example.android.stepapp.home.HomeViewModel
-import com.example.android.stepapp.home.HomeViewModelFactory
 
 
 class AddGoalFragment : Fragment() {
@@ -55,7 +48,7 @@ class AddGoalFragment : Fragment() {
         if (inputCheck(goalName,stepGoal))
         {
             val goal  = GoalData()
-            goal.GoalName =goalName
+            goal.goalName =goalName
             goal.stepGoal = Integer.parseInt(stepGoal.toString())
             addGoalViewModel.addGoal(goal)
             //Now added, navigate back

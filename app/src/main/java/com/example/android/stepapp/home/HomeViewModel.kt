@@ -45,9 +45,9 @@ class HomeViewModel (val dayDatabaseDao: DayDatabaseDao,val goalDatabaseDao: Goa
     //val dayString = Transformations.map(days){days -> formatDays(days,application.resources)    }
 
     init{
+        allGoals = goalDatabaseDao.getAllGoals()
         _steps.value=0f;
         _max.value=1000f;
-        allGoals = goalDatabaseDao.getAllGoals()
         initDay()
 
     }
@@ -130,10 +130,50 @@ class HomeViewModel (val dayDatabaseDao: DayDatabaseDao,val goalDatabaseDao: Goa
         updatedDay.dayID= _thisDay.value!!.dayID
         updatedDay.stepDate= _thisDay.value!!.stepDate
         updatedDay.stepGoal= _thisDay.value!!.stepCount
+        updatedDay.stepGoalName= _thisDay.value!!.stepGoalName
 
         _thisDay.value = updatedDay
         onUpdateDay(updatedDay)
 
+
+
+    }
+
+
+    private suspend fun getGoalByName(goalName : String) : GoalData{
+        return withContext(Dispatchers.IO){
+            var goal = goalDatabaseDao.getGoalByName(goalName)
+            goal
+        }
+    }
+
+
+
+    fun setSelectedGoal(goalName: String){
+
+        var goal : GoalData
+        //get goal and this day and apply goal
+
+
+        viewModelScope.launch {
+            goal = getGoalByName(goalName)
+
+
+            val updatedDay = DayData()
+
+            if (_thisDay.value != null && goal != null) {
+                updatedDay.dayID = _thisDay.value!!.dayID
+                updatedDay.stepCount = _thisDay.value!!.stepCount
+                updatedDay.stepDate = _thisDay.value!!.stepDate
+                //update the day with goal selected
+                updatedDay.stepGoal = goal.stepGoal
+                updatedDay.stepGoalName = goal.goalName
+                update(updatedDay)
+
+            }
+
+
+        }
 
 
     }

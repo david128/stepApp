@@ -4,14 +4,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.fragment.app.ListFragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android.stepapp.database.GoalData
 import com.example.android.stepapp.R
-
-import androidx.fragment.app.FragmentTransaction
-import com.example.android.stepapp.addGoal.AddGoalFragment
-import com.example.android.stepapp.database.DayData
 
 
 class ListAdapter(private val listener: OnGoalListner) :RecyclerView.Adapter<ListAdapter.ViewHolder>(){
@@ -43,7 +38,7 @@ class ListAdapter(private val listener: OnGoalListner) :RecyclerView.Adapter<Lis
 
             if (adapterPosition != RecyclerView.NO_POSITION){
                 val id = goalList[adapterPosition].goalID
-                listener.onGoalLongClick(goalList[adapterPosition].GoalName)
+                listener.onGoalLongClick(goalList[adapterPosition].goalName)
             }
             return true
         }
@@ -66,7 +61,7 @@ class ListAdapter(private val listener: OnGoalListner) :RecyclerView.Adapter<Lis
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentItem = goalList[position]
         holder.stepGoal.text = currentItem.stepGoal.toString()
-        holder.goalName.text = currentItem.GoalName
+        holder.goalName.text = currentItem.goalName
 
 
 

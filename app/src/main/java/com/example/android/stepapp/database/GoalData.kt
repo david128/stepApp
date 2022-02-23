@@ -13,7 +13,7 @@ data class GoalData(
     @PrimaryKey(autoGenerate = true)
     var goalID: Long =0L,
     @ColumnInfo(name = "goal_name")
-    var GoalName : String = "" ,
+    var goalName : String = "",
     @ColumnInfo(name = "goal_target")
     var stepGoal : Int = 0
 ) : Parcelable

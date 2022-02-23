@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
@@ -15,12 +16,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.android.stepapp.DateToString
 import com.example.android.stepapp.R
 import com.example.android.stepapp.database.DayDatabase
-import com.example.android.stepapp.database.GoalData
 import com.example.android.stepapp.database.GoalDatabase
 import com.example.android.stepapp.databinding.FragmentHomeBinding
-import java.text.SimpleDateFormat
-import java.util.*
-import kotlin.collections.ArrayList
 
 
 class HomeFragment : Fragment() {
@@ -115,6 +112,8 @@ class HomeFragment : Fragment() {
 
 
 
+
+
         return binding.root
     }
 
@@ -132,11 +131,24 @@ class HomeFragment : Fragment() {
 
         viewModel.allGoals.observe(viewLifecycleOwner, Observer { goals ->
 
+            goalList.clear()
             for (g in goals) {
-                goalList.add(g.GoalName)
+                goalList.add(g.goalName)
             }
             //notify updated list
             arrayAdapter.notifyDataSetChanged()
+        })
+
+        //when item selected, text changes,
+        dropDown.addTextChangedListener(object: TextWatcher{
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                viewModel.setSelectedGoal(dropDown.text.toString())
+                Toast.makeText(requireContext(), dropDown.text.toString(), Toast.LENGTH_SHORT).show()
+            }
+            override fun afterTextChanged(p0: Editable?) {
+            }
         })
 
 

@@ -7,19 +7,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.android.stepapp.R
-import com.example.android.stepapp.addGoal.AddGoalFragment
 import com.example.android.stepapp.database.GoalData
 import com.example.android.stepapp.database.GoalDatabase
-import com.example.android.stepapp.databinding.FragmentGoalsBinding
 import com.example.android.stepapp.databinding.FragmentUpdateGoalBinding
-import com.example.android.stepapp.goal.GoalsViewModel
-import com.example.android.stepapp.goal.GoalsViewModelFactory
 
 
 class UpdateGoalFragment : Fragment() {
@@ -44,7 +39,7 @@ class UpdateGoalFragment : Fragment() {
         viewModel= ViewModelProvider(this,viewModelFactory).get(UpdateGoalViewModel::class.java)
 
 
-        binding.updateTextGoalName.setText( args.currentGoal.GoalName)
+        binding.updateTextGoalName.setText( args.currentGoal.goalName)
         binding.updateTextNumber.setText(args.currentGoal.stepGoal.toString())
 
         binding.updateGoalButton.setOnClickListener{
@@ -60,7 +55,7 @@ class UpdateGoalFragment : Fragment() {
             //create goal
             val updatedGoal = GoalData()
             updatedGoal.goalID = args.currentGoal.goalID
-            updatedGoal.GoalName = name
+            updatedGoal.goalName = name
             updatedGoal.stepGoal = Integer.parseInt(steps.toString())
 
             //update current goal
