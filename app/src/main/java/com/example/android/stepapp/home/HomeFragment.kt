@@ -20,10 +20,7 @@ import com.example.android.stepapp.database.GoalDatabase
 import com.example.android.stepapp.databinding.FragmentHomeBinding
 import java.text.SimpleDateFormat
 import java.util.*
-
-
-
-
+import kotlin.collections.ArrayList
 
 
 class HomeFragment : Fragment() {
@@ -31,6 +28,11 @@ class HomeFragment : Fragment() {
     private lateinit var viewModel : HomeViewModel
 
     private lateinit var binding: FragmentHomeBinding
+
+    override fun onResume() {
+        super.onResume()
+        setupDropdown()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -60,10 +62,10 @@ class HomeFragment : Fragment() {
         binding.setLifecycleOwner (this)
 
 
-
-
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
-        //initial update
+
+
+
 
         //update day
         binding.buttonPrev.setOnClickListener{
@@ -121,7 +123,24 @@ class HomeFragment : Fragment() {
         return (steps/max *100f).toInt()
     }
 
+    private fun setupDropdown(){
 
+        val dropDown = binding.goalHomeDropdown
+        var goalList= arrayListOf<String>()
+        val arrayAdapter = ArrayAdapter(requireContext(),R.layout.goal_dropdown, goalList)
+        dropDown.setAdapter(arrayAdapter)
+
+        viewModel.allGoals.observe(viewLifecycleOwner, Observer { goals ->
+
+            for (g in goals) {
+                goalList.add(g.GoalName)
+            }
+            //notify updated list
+            arrayAdapter.notifyDataSetChanged()
+        })
+
+
+    }
 
 
 

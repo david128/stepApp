@@ -17,5 +17,7 @@ data class DayData(
     @ColumnInfo(name = "step_count")
     var stepCount : Int = 0,
     @ColumnInfo(name = "step_goal")
-    var stepGoal : Int = 0
+    var stepGoal : Int = 0,
+    @ColumnInfo(name = "step_goal_name")
+    var stepGoalName : String = ""
 )

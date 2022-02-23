@@ -25,6 +25,9 @@ interface GoalDatabaseDao {
     @Query("SELECT * FROM goal_table ORDER BY goalID DESC")
     fun getAllGoals() : LiveData<List<GoalData>>
 
+    @Query("SELECT * FROM goal_table WHERE goal_name = :name")
+    suspend fun getGoalByName(name:String) : GoalData
+
 
 
 
