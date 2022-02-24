@@ -26,7 +26,7 @@ interface GoalDatabaseDao {
     fun getAllGoals() : LiveData<List<GoalData>>
 
     @Query("SELECT * FROM goal_table WHERE goal_name = :name")
-    suspend fun getGoalByName(name:String) : GoalData
+    suspend fun getGoalByName(name:String) : GoalData?
 
 
 

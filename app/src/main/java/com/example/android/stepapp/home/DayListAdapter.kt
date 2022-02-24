@@ -40,7 +40,7 @@ class DayListAdapter :RecyclerView.Adapter<DayListAdapter.ViewHolder>(){
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentItem = dayList[position]
         holder.dayDate.text = currentItem.stepDate
-        holder.dayStepGoal.text = currentItem.stepGoal.toString()
+        holder.dayStepGoal.text = currentItem.stepGoalName.toString()
 
 
     }

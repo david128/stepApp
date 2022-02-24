@@ -24,6 +24,7 @@ import com.example.android.stepapp.database.GoalDatabase
 import com.example.android.stepapp.databinding.FragmentGoalsBinding
 import com.example.android.stepapp.databinding.FragmentHomeBinding
 import com.example.android.stepapp.updateGoal.UpdateGoalFragment
+import com.google.android.material.snackbar.Snackbar
 
 
 /**
@@ -66,6 +67,14 @@ class GoalsFragment : Fragment(), ListAdapter.OnGoalListner {
                 //remove item
                 viewModel.deleteGoal(adapter.getItem(pos))
                 recyclerView.adapter?.notifyItemRemoved(pos)
+                val snack = view?.let { Snackbar.make(it,"Item Deleted",Snackbar.LENGTH_LONG) }
+                if (snack != null) {
+                    
+                    snack.setAction("Undo", View.OnClickListener {
+                        viewModel.restoreGoal()
+                    })
+                    snack.show()
+                }
 
             }
         }

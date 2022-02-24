@@ -99,15 +99,22 @@ class HomeFragment : Fragment() {
         viewModel.thisDay.observe(this, Observer{newDay ->
             if (newDay != null) {
                 binding.circularProgressBar.progress=newDay.stepCount.toFloat()
-                binding.percentage.setText(getPercentage(newDay.stepCount.toFloat(),newDay.stepGoal.toFloat()).toString() + "%")
+                binding.percentage.setText(getPercentage(newDay.stepCount,newDay.stepGoal).toString() + "%")
+                binding.stepsTextView.setText(newDay.stepCount.toString())
+                binding.homeGoalTextView.setText(newDay.stepGoal.toString())
+
             }
 
         })
 
 
         viewModel.max.observe(this, Observer {newMax ->
-            binding.circularProgressBar.progressMax=newMax
-            binding.percentage.setText(getPercentage((viewModel.steps.value ?: 0.0f), newMax).toString() + "%")
+            binding.circularProgressBar.progressMax=newMax.toFloat()
+            if(viewModel.thisDay.value?.stepCount!= null){
+                binding.percentage.setText(getPercentage((viewModel.thisDay.value?.stepCount!!), newMax).toString() + "%")
+
+            }
+            binding.homeGoalTextView.setText(newMax.toString())
         })
 
 
@@ -118,8 +125,8 @@ class HomeFragment : Fragment() {
     }
 
 
-    fun getPercentage(steps: Float, max: Float) : Int{
-        return (steps/max *100f).toInt()
+    fun getPercentage(steps: Int, max: Int) : Int{
+        return (steps.toFloat()/max.toFloat() *100f).toInt()
     }
 
     private fun setupDropdown(){
@@ -144,7 +151,7 @@ class HomeFragment : Fragment() {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                viewModel.setSelectedGoal(dropDown.text.toString())
+                viewModel.changeDayGoal(dropDown.text.toString())
                 Toast.makeText(requireContext(), dropDown.text.toString(), Toast.LENGTH_SHORT).show()
             }
             override fun afterTextChanged(p0: Editable?) {
