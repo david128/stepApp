@@ -40,7 +40,7 @@ class GoalsFragment : Fragment(), ListAdapter.OnGoalListner {
 
 
     private lateinit var viewModel: GoalsViewModel
-    private var activeName = "e"
+    private var activeName = ""
 
 
     override fun onResume() {

@@ -7,7 +7,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.android.stepapp.R
@@ -18,7 +20,7 @@ import com.example.android.stepapp.databinding.FragmentAddGoalBinding
 
 class AddGoalFragment : Fragment() {
 
-    private lateinit var addGoalViewModel : AddGoalViewModel
+    private lateinit var viewModel : AddGoalViewModel
 
 
     override fun onCreateView(
@@ -34,12 +36,29 @@ class AddGoalFragment : Fragment() {
 
         val viewModelFactory = AddGoalViewModelFactory(dataSource, application)
 
-       addGoalViewModel= ViewModelProvider(this,viewModelFactory).get(AddGoalViewModel::class.java)
+       viewModel= ViewModelProvider(this,viewModelFactory).get(AddGoalViewModel::class.java)
 
         binding.addGoalButton.setOnClickListener{
             insertDataToDatabase(binding.editTextGoalName.text.toString(), binding.editTextNumber.text)
-
         }
+
+
+        //observe state and act accordingly
+        //1 -> Error
+        //2 -> Correct so allow.
+        viewModel.state.observe(viewLifecycleOwner, Observer { s ->
+            when(s){
+                1-> {
+                    Toast.makeText(
+                        requireContext(),
+                        "Error goal already exists",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    viewModel.resetState()
+                }
+                2->findNavController().navigate(R.id.action_addGoalFragment_to_goalsFragment)
+            }
+        })
 
         return binding.root
     }
@@ -50,9 +69,7 @@ class AddGoalFragment : Fragment() {
             val goal  = GoalData()
             goal.goalName =goalName
             goal.stepGoal = Integer.parseInt(stepGoal.toString())
-            addGoalViewModel.addGoal(goal)
-            //Now added, navigate back
-            findNavController().navigate(R.id.action_addGoalFragment_to_goalsFragment)
+            viewModel.attemptAddGoal(goal)
 
         }
     }

@@ -28,7 +28,8 @@ interface GoalDatabaseDao {
     @Query("SELECT * FROM goal_table WHERE goal_name = :name")
     suspend fun getGoalByName(name:String) : GoalData?
 
-
+    @Query("SELECT EXISTS(SELECT * FROM goal_table WHERE goal_name = :queryName)")
+    suspend fun doesGoalExistWithName(queryName:String) : Boolean
 
 
 }
