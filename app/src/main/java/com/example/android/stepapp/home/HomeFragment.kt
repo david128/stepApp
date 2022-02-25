@@ -102,6 +102,7 @@ class HomeFragment : Fragment() {
                 binding.percentage.setText(getPercentage(newDay.stepCount,newDay.stepGoal).toString() + "%")
                 binding.stepsTextView.setText(newDay.stepCount.toString())
                 binding.homeGoalTextView.setText(newDay.stepGoal.toString())
+                binding.goalHomeDropdown.setText(newDay.stepGoalName)
 
             }
 

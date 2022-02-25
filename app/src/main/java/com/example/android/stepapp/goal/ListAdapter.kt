@@ -1,5 +1,6 @@
 package com.example.android.stepapp.goal
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,9 +10,13 @@ import com.example.android.stepapp.database.GoalData
 import com.example.android.stepapp.R
 
 
-class ListAdapter(private val listener: OnGoalListner) :RecyclerView.Adapter<ListAdapter.ViewHolder>(){
+class ListAdapter(private val listener: OnGoalListner, private val activeName: String) :RecyclerView.Adapter<ListAdapter.ViewHolder>(){
 
     private var goalList = emptyList<GoalData>()
+
+
+
+
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
         View.OnClickListener,View.OnLongClickListener {
         val goalName: TextView
@@ -46,6 +51,16 @@ class ListAdapter(private val listener: OnGoalListner) :RecyclerView.Adapter<Lis
 
     }
 
+    class ActiveViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
+        val goalName: TextView
+        val stepGoal: TextView
+        init {
+            // Define click listener for the ViewHolder's View.
+            goalName = itemView.findViewById(R.id.active_goal_row_goal_name)
+            stepGoal = itemView.findViewById(R.id.active_goal_row_step_goal)
+        }
+    }
+
 
 
     interface OnGoalListner{
@@ -54,7 +69,10 @@ class ListAdapter(private val listener: OnGoalListner) :RecyclerView.Adapter<Lis
 
     }
 
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+
+        Log.d("CVH", parent.toString() + " + " + viewType.toString() )
         return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.goal_row,parent,false))
     }
 
@@ -68,7 +86,7 @@ class ListAdapter(private val listener: OnGoalListner) :RecyclerView.Adapter<Lis
     }
 
     fun getItem(position: Int) : GoalData{
-
+        Log.d("CVH", "position " + " + " + position.toString() )
         return goalList[position]
     }
 

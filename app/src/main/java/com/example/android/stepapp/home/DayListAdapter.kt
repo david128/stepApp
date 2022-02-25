@@ -21,7 +21,6 @@ class DayListAdapter :RecyclerView.Adapter<DayListAdapter.ViewHolder>(){
             // Define click listener for the ViewHolder's View.
             dayDate = itemView.findViewById(R.id.day_row_date)
             dayStepGoal = itemView.findViewById(R.id.day_row_step_goal)
-
         }
 
 

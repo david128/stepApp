@@ -126,7 +126,7 @@ class HomeViewModel (val dayDatabaseDao: DayDatabaseDao,val goalDatabaseDao: Goa
     }
 
     //stop tracking this day
-    fun onUpdateDay(day : DayData){
+    private fun onUpdateDay(day : DayData){
         viewModelScope.launch {
             update(day)
         }
@@ -197,37 +197,42 @@ class HomeViewModel (val dayDatabaseDao: DayDatabaseDao,val goalDatabaseDao: Goa
 
         Log.d("setDbg", "setting" + _thisDay.value.toString()+ " to " + goalName)
 
+        //check if need to update
+        if (goalName != _thisDay.value?.stepGoalName ?: ""){
+            viewModelScope.launch {
+                var goal : GoalData?
+                if (goalName =="Default Goal"){
+                    //create a default goal
+                    goal = GoalData()
+                    goal.goalName = goalName
+                    goal.stepGoal = 1000
+                }
+                else{
+                    goal =getGoalByName(goalName)
+                }
 
-        viewModelScope.launch {
-            var goal : GoalData?
-            if (goalName =="Default Goal"){
-                //create a default goal
-                goal = GoalData()
-                goal.goalName = goalName
-                goal.stepGoal = 1000
+                val updatedDay = DayData()
+
+                if (_thisDay.value != null && goal != null) {
+
+
+                    updatedDay.dayID = _thisDay.value!!.dayID
+                    updatedDay.stepCount = _thisDay.value!!.stepCount
+                    updatedDay.stepDate = _thisDay.value!!.stepDate
+                    //update the day with goal selected
+                    updatedDay.stepGoal = goal!!.stepGoal
+                    _max.value = updatedDay.stepGoal
+                    updatedDay.stepGoalName = goal!!.goalName
+                    update(updatedDay)
+                    _thisDay.value = updatedDay
+
+                }
+
+                Log.d("setDbg", "day goal set, updated now " + _thisDay.value.toString())
             }
-            else{
-                goal =getGoalByName(goalName)
-            }
-
-            val updatedDay = DayData()
-
-            if (_thisDay.value != null && goal != null) {
-
-                updatedDay.dayID = _thisDay.value!!.dayID
-                updatedDay.stepCount = _thisDay.value!!.stepCount
-                updatedDay.stepDate = _thisDay.value!!.stepDate
-                //update the day with goal selected
-                updatedDay.stepGoal = goal!!.stepGoal
-                _max.value = updatedDay.stepGoal
-                updatedDay.stepGoalName = goal!!.goalName
-                update(updatedDay)
-                _thisDay.value = updatedDay
-
-            }
-
-            Log.d("setDbg", "day goal set, updated now " + _thisDay.value.toString())
         }
+
+
 
 
 
