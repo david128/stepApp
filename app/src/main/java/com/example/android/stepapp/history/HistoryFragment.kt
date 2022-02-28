@@ -10,8 +10,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.android.stepapp.R
 import com.example.android.stepapp.database.DayDatabase
@@ -58,9 +60,16 @@ class HistoryFragment : Fragment() {
             val selectedDate = dts.toSimpleString(Date(cv.date))
             Toast.makeText(requireContext(),selectedDate ,Toast.LENGTH_SHORT ).show()
             //get day
+            viewModel.getDay(selectedDate)
         }
 
-
+        viewModel.navigate.observe(this, Observer { nav ->
+            if (nav && viewModel.day!=null){
+                Log.d("args",viewModel.day.toString() )
+                val action = HistoryFragmentDirections.actionHistoryFragmentToHistorical(viewModel.day!!)
+                findNavController().navigate(action)
+            }
+        })
 
 
         return binding.root

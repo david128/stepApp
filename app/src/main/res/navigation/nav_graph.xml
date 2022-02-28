@@ -34,7 +34,7 @@
         android:label="HistoryFragment" >
         <action
             android:id="@+id/action_historyFragment_to_historical"
-            app:destination="@id/historical" />
+            app:destination="@id/historicalFragment" />
     </fragment>
     <fragment
         android:id="@+id/updateGoalFragment"
@@ -48,12 +48,15 @@
             app:destination="@id/goalsFragment" />
     </fragment>
     <fragment
-        android:id="@+id/historical"
-        android:name="com.example.android.stepapp.historical"
-        android:label="fragment_historical"
-        tools:layout="@layout/fragment_historical" >
+        android:id="@+id/historicalFragment"
+        android:name="com.example.android.stepapp.historical.HistoricalFragment"
+        android:label="HistoricalFragment"
+        tools:layout="@layout/fragment_historical">
         <action
             android:id="@+id/action_historical_to_historyFragment"
             app:destination="@id/historyFragment" />
+        <argument
+            android:name="day"
+            app:argType="com.example.android.stepapp.database.DayData" />
     </fragment>
 </navigation>
