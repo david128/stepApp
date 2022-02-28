@@ -52,7 +52,6 @@ class HomeViewModel (val dayDatabaseDao: DayDatabaseDao,val goalDatabaseDao: Goa
     init{
         allGoals = goalDatabaseDao.getAllGoals()
         _steps.value=0f;
-        _max.value=1000;
         initDay()
 
     }
@@ -144,12 +143,11 @@ class HomeViewModel (val dayDatabaseDao: DayDatabaseDao,val goalDatabaseDao: Goa
         updatedDay.stepCount = _thisDay.value?.stepCount?.plus((addAmount.value!!))!!
         updatedDay.dayID= _thisDay.value!!.dayID
         updatedDay.stepDate= _thisDay.value!!.stepDate
-        updatedDay.stepGoal= _thisDay.value!!.stepCount
+        updatedDay.stepGoal= _thisDay.value!!.stepGoal
         updatedDay.stepGoalName= _thisDay.value!!.stepGoalName
 
         _thisDay.value = updatedDay
         onUpdateDay(updatedDay)
-
 
 
     }

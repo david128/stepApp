@@ -3,6 +3,7 @@ package com.example.android.stepapp.home
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -60,7 +61,7 @@ class HomeFragment : Fragment() {
 
 
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
-
+        binding.topText.text = dts.toSimpleString(viewModel.currDate.time)
 
 
 
@@ -98,7 +99,9 @@ class HomeFragment : Fragment() {
 
         viewModel.thisDay.observe(this, Observer{newDay ->
             if (newDay != null) {
+                Log.d("Home", "thisDayObserve()" + newDay.toString())
                 binding.circularProgressBar.progress=newDay.stepCount.toFloat()
+                binding.circularProgressBar.progressMax=newDay.stepGoal.toFloat()
                 binding.percentage.setText(getPercentage(newDay.stepCount,newDay.stepGoal).toString() + "%")
                 binding.stepsTextView.setText(newDay.stepCount.toString())
                 binding.homeGoalTextView.setText(newDay.stepGoal.toString())
@@ -110,6 +113,7 @@ class HomeFragment : Fragment() {
 
 
         viewModel.max.observe(this, Observer {newMax ->
+            Log.d("Home", "newMax.Observe()" + newMax.toString())
             binding.circularProgressBar.progressMax=newMax.toFloat()
             if(viewModel.thisDay.value?.stepCount!= null){
                 binding.percentage.setText(getPercentage((viewModel.thisDay.value?.stepCount!!), newMax).toString() + "%")
@@ -138,7 +142,6 @@ class HomeFragment : Fragment() {
         dropDown.setAdapter(arrayAdapter)
 
         viewModel.allGoals.observe(viewLifecycleOwner, Observer { goals ->
-
             goalList.clear()
             for (g in goals) {
                 goalList.add(g.goalName)
@@ -152,8 +155,8 @@ class HomeFragment : Fragment() {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                Log.d("Home", "Text changed" + dropDown.text.toString())
                 viewModel.changeDayGoal(dropDown.text.toString())
-                Toast.makeText(requireContext(), dropDown.text.toString(), Toast.LENGTH_SHORT).show()
             }
             override fun afterTextChanged(p0: Editable?) {
             }

@@ -57,9 +57,6 @@ class GoalsFragment : Fragment(), ListAdapter.OnGoalListner {
 
         }
 
-
-
-
         //db and vm set up
         val application = requireNotNull(this.activity).application
         val goalDataSource = GoalDatabase.getInstance(application).goalDatabaseDao
