@@ -1,23 +1,26 @@
 package com.example.android.stepapp.history
 
+import android.graphics.Color
 import android.os.Bundle
+import android.provider.CalendarContract
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CalendarView
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.android.stepapp.DateToString
 import com.example.android.stepapp.R
 import com.example.android.stepapp.database.DayDatabase
 import com.example.android.stepapp.databinding.FragmentHistoryBinding
 import com.example.android.stepapp.home.DayListAdapter
-import java.text.SimpleDateFormat
 import java.util.*
+import com.applikeysolutions.cosmocalendar.settings.lists.connected_days.ConnectedDays
+import com.example.android.stepapp.DateToString
+import java.text.SimpleDateFormat
 
 
 /**
@@ -44,19 +47,21 @@ class HistoryFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
 
-        val calendarView = binding.calendarView
+        val calendarView=binding.calendarView
+        val dts = DateToString()
+        val calendar = Calendar.getInstance()
 
 
-        calendarView.setOnDateChangeListener { calendarView,y,m,d ->
-            val sdf = SimpleDateFormat("dd/MM/yyyy")
-            val selectedDate = sdf.format(Date(calendarView.date))
+        calendarView.setOnDateChangeListener { cv,y,m,d ->
+            calendar.set(y,m,d)
+            calendarView.date = calendar.timeInMillis
+            val selectedDate = dts.toSimpleString(Date(cv.date))
             Toast.makeText(requireContext(),selectedDate ,Toast.LENGTH_SHORT ).show()
+            //get day
         }
 
 
-        viewModel.readAllData.observe(viewLifecycleOwner, Observer { day ->
-            adapter.setData(day)
-        })
+
 
         return binding.root
     }

@@ -85,10 +85,7 @@ class HomeViewModel (val dayDatabaseDao: DayDatabaseDao,val goalDatabaseDao: Goa
                 newDayChangeGoal()
             }
 
-
         }
-
-
 
     }
 

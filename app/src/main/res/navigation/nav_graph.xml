@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
     app:startDestination="@id/homeFragment">
 
@@ -30,7 +31,11 @@
     <fragment
         android:id="@+id/historyFragment"
         android:name="com.example.android.stepapp.history.HistoryFragment"
-        android:label="HistoryFragment" />
+        android:label="HistoryFragment" >
+        <action
+            android:id="@+id/action_historyFragment_to_historical"
+            app:destination="@id/historical" />
+    </fragment>
     <fragment
         android:id="@+id/updateGoalFragment"
         android:name="com.example.android.stepapp.updateGoal.UpdateGoalFragment"
@@ -41,5 +46,14 @@
         <action
             android:id="@+id/action_updateGoalFragment_to_goalsFragment"
             app:destination="@id/goalsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/historical"
+        android:name="com.example.android.stepapp.historical"
+        android:label="fragment_historical"
+        tools:layout="@layout/fragment_historical" >
+        <action
+            android:id="@+id/action_historical_to_historyFragment"
+            app:destination="@id/historyFragment" />
     </fragment>
 </navigation>

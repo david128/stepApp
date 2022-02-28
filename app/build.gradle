@@ -55,7 +55,8 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui-ktx:2.4.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
-
+    //calendar
+    implementation 'com.github.applikeysolutions:cosmocalendar:1.0.4'
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
