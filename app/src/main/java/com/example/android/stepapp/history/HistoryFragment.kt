@@ -48,6 +48,10 @@ class HistoryFragment : Fragment() {
         recyclerView.adapter= adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
+        viewModel.allDays.observe(viewLifecycleOwner, Observer { day ->
+            adapter.setData(day)
+        })
+
 
         val calendarView=binding.calendarView
         val dts = DateToString()
@@ -65,7 +69,7 @@ class HistoryFragment : Fragment() {
 
         viewModel.navigate.observe(this, Observer { nav ->
             if (nav && viewModel.day!=null){
-                Log.d("args",viewModel.day.toString() )
+                viewModel.reseetNavigate()
                 val action = HistoryFragmentDirections.actionHistoryFragmentToHistorical(viewModel.day!!)
                 findNavController().navigate(action)
             }

@@ -16,10 +16,12 @@ class DayListAdapter :RecyclerView.Adapter<DayListAdapter.ViewHolder>(){
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val dayDate: TextView
         val dayStepGoal: TextView
+        val dayStepCount: TextView
 
         init {
             // Define click listener for the ViewHolder's View.
             dayDate = itemView.findViewById(R.id.day_row_date)
+            dayStepCount = itemView.findViewById(R.id.day_row_step_count)
             dayStepGoal = itemView.findViewById(R.id.day_row_step_goal)
         }
 
@@ -39,8 +41,8 @@ class DayListAdapter :RecyclerView.Adapter<DayListAdapter.ViewHolder>(){
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentItem = dayList[position]
         holder.dayDate.text = currentItem.stepDate
-        holder.dayStepGoal.text = currentItem.stepGoalName.toString()
-
+        holder.dayStepCount.text = currentItem.stepCount.toString() + "/"
+        holder.dayStepGoal.text = currentItem.stepGoal.toString()
 
     }
 

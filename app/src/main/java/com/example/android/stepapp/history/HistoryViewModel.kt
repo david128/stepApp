@@ -77,6 +77,10 @@ class HistoryViewModel(val database: DayDatabaseDao, application: Application): 
         }
     }
 
+    fun reseetNavigate(){
+        _navigate.value=false
+    }
+
     //insert to db
     private suspend fun  insert(day: DayData){
         withContext(Dispatchers.IO){

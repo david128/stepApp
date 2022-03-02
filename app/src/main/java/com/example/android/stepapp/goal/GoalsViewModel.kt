@@ -2,15 +2,13 @@ package com.example.android.stepapp.goal
 
 import android.app.Application
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.android.stepapp.DateToString
 import com.example.android.stepapp.database.DayData
 import com.example.android.stepapp.database.DayDatabaseDao
 import com.example.android.stepapp.database.GoalData
 import com.example.android.stepapp.database.GoalDatabaseDao
+import com.example.android.stepapp.pref.Pref
 import kotlinx.coroutines.*
 import java.util.*
 
@@ -20,7 +18,8 @@ class GoalsViewModel(val goalDatabaseDao: GoalDatabaseDao, val dayDatabaseDao: D
     private var viewModelJob = Job()
     private val uiScope = CoroutineScope(Dispatchers.Main+viewModelJob)
     private var deletedGoal : GoalData? = null
-
+    private  val pref  = Pref(application)
+    val gPref : LiveData<Boolean>
     //used to get current day, and then active goal
     private val currDate = Calendar.getInstance()
     private val dts = DateToString()
@@ -42,6 +41,8 @@ class GoalsViewModel(val goalDatabaseDao: GoalDatabaseDao, val dayDatabaseDao: D
         readAllData = goalDatabaseDao.getAllGoals()
         getThisDay()
         Log.d("acG","Initting")
+        gPref = pref.readGoalEditingFromDS.asLiveData()
+
     }
 
 

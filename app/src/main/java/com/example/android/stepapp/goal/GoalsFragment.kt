@@ -57,6 +57,8 @@ class GoalsFragment : Fragment(), ListAdapter.OnGoalListner {
 
         }
 
+
+
         //db and vm set up
         val application = requireNotNull(this.activity).application
         val goalDataSource = GoalDatabase.getInstance(application).goalDatabaseDao
@@ -69,6 +71,8 @@ class GoalsFragment : Fragment(), ListAdapter.OnGoalListner {
         val recyclerView = binding.recycleGoalView
         recyclerView.adapter= adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
+
+        Toast.makeText(requireContext(), viewModel.gPref.value.toString(), Toast.LENGTH_SHORT).show()
 
         //delete functionality
         val swipeToDeleteCallback = object : SwipeToDeleteCallback(){
@@ -132,13 +136,17 @@ class GoalsFragment : Fragment(), ListAdapter.OnGoalListner {
 
     override fun onGoalClick(goal : GoalData) {
 
-        val action = GoalsFragmentDirections.actionGoalsFragment2ToUpdateGoalFragment(goal)
-        findNavController().navigate(action)
 
+        if (viewModel.gPref.value == true){
+            val action = GoalsFragmentDirections.actionGoalsFragment2ToUpdateGoalFragment(goal)
+            findNavController().navigate(action)
+        }else {
+            //Toast.makeText(requireContext(), "Editing Disabled", Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun onGoalLongClick(name: String) {
-        Toast.makeText(requireContext(), "Long click detected", Toast.LENGTH_SHORT).show()
+
 
     }
 
