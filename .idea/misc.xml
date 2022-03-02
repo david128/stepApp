@@ -7,6 +7,7 @@
         <entry key="..\:/Users/David/AndroidStudioProjects/stepApp/app/src/main/res/drawable/border.xml" value="0.26927083333333335" />
         <entry key="..\:/Users/David/AndroidStudioProjects/stepApp/app/src/main/res/layout/active_goal_row.xml" value="0.23229166666666667" />
         <entry key="..\:/Users/David/AndroidStudioProjects/stepApp/app/src/main/res/layout/activity_main.xml" value="0.22" />
+        <entry key="..\:/Users/David/AndroidStudioProjects/stepApp/app/src/main/res/layout/activity_settings.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/David/AndroidStudioProjects/stepApp/app/src/main/res/layout/day_row.xml" value="0.20520833333333333" />
         <entry key="..\:/Users/David/AndroidStudioProjects/stepApp/app/src/main/res/layout/fragment_add_goal.xml" value="0.28125" />
         <entry key="..\:/Users/David/AndroidStudioProjects/stepApp/app/src/main/res/layout/fragment_goal.xml" value="0.20520833333333333" />
@@ -18,6 +19,7 @@
         <entry key="..\:/Users/David/AndroidStudioProjects/stepApp/app/src/main/res/layout/goal_dropdown.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/David/AndroidStudioProjects/stepApp/app/src/main/res/layout/goal_row.xml" value="0.33" />
         <entry key="..\:/Users/David/AndroidStudioProjects/stepApp/app/src/main/res/menu/bottom_nav_menu.xml" value="0.33697916666666666" />
+        <entry key="..\:/Users/David/AndroidStudioProjects/stepApp/app/src/main/res/menu/top_menu.xml" value="0.2838541666666667" />
       </map>
     </option>
   </component>
