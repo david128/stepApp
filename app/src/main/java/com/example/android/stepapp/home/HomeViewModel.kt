@@ -56,7 +56,6 @@ class HomeViewModel (val dayDatabaseDao: DayDatabaseDao,val goalDatabaseDao: Goa
     init{
         allGoals = goalDatabaseDao.getAllGoals()
         _steps.value=0f;
-        initDay()
 
         //default goal for when no goals in system
         defaultGoal.stepGoal =1000

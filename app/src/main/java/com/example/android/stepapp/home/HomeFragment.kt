@@ -29,7 +29,6 @@ class HomeFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         viewModel.allGoals.value?.let { setupDropdown(it) }
-        //refresh day
         viewModel.initDay()
     }
 
@@ -108,7 +107,6 @@ class HomeFragment : Fragment() {
         viewModel.allGoals.observe(viewLifecycleOwner, Observer { goals ->
             //update list
             if(goals.isEmpty()){
-                Toast.makeText(requireContext(),"Empty",Toast.LENGTH_SHORT ).show()
                 viewModel.addDefaultGoal()
             }
             setupDropdown(goals)

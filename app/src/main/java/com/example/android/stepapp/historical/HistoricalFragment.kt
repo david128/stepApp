@@ -77,15 +77,33 @@ class HistoricalFragment : Fragment() {
         setupDropdown()
 
         binding.historicalUpdateButton.setOnClickListener {
-            viewModel.updateDay(Integer.parseInt(binding.historicalStepCount.text.toString()),
-                            binding.goalHistoricalDropdown.text.toString())
-            findNavController().navigate(R.id.action_historical_to_historyFragment)
+            if (inputCheck(binding.historicalStepCount.text)){
+                viewModel.updateDay(Integer.parseInt(binding.historicalStepCount.text.toString()),
+                    binding.goalHistoricalDropdown.text.toString())
+                findNavController().navigate(R.id.action_historical_to_historyFragment)
+            }
         }
 
 
         return binding.root
     }
 
+    private fun inputCheck(stepGoal: Editable) : Boolean{
+        var flag =0
+        if (stepGoal.isEmpty()){
+            flag++
+        }
+        when(flag){
+            0-> return true
+            1-> Toast.makeText(
+                requireContext(),
+                "Error: please enter a step goal",
+                Toast.LENGTH_SHORT
+            ).show()
+
+        }
+        return false
+    }
 
     private fun setupDropdown(){
 

@@ -5,6 +5,9 @@
       <map>
         <entry key="..\:/Docs/UNI/Strathclyde/CS551/stepApp/app/src/main/res/layout/fragment_home.xml" value="0.2" />
         <entry key="..\:/Users/David/AndroidStudioProjects/stepApp/app/src/main/res/drawable/border.xml" value="0.26927083333333335" />
+        <entry key="..\:/Users/David/AndroidStudioProjects/stepApp/app/src/main/res/drawable/ic_add.xml" value="0.3" />
+        <entry key="..\:/Users/David/AndroidStudioProjects/stepApp/app/src/main/res/drawable/ic_cog.xml" value="0.3" />
+        <entry key="..\:/Users/David/AndroidStudioProjects/stepApp/app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.3" />
         <entry key="..\:/Users/David/AndroidStudioProjects/stepApp/app/src/main/res/layout/active_goal_row.xml" value="0.23229166666666667" />
         <entry key="..\:/Users/David/AndroidStudioProjects/stepApp/app/src/main/res/layout/activity_main.xml" value="0.22" />
         <entry key="..\:/Users/David/AndroidStudioProjects/stepApp/app/src/main/res/layout/activity_settings.xml" value="0.36666666666666664" />
@@ -13,13 +16,15 @@
         <entry key="..\:/Users/David/AndroidStudioProjects/stepApp/app/src/main/res/layout/fragment_goal.xml" value="0.20520833333333333" />
         <entry key="..\:/Users/David/AndroidStudioProjects/stepApp/app/src/main/res/layout/fragment_goals.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/David/AndroidStudioProjects/stepApp/app/src/main/res/layout/fragment_historical.xml" value="0.25" />
-        <entry key="..\:/Users/David/AndroidStudioProjects/stepApp/app/src/main/res/layout/fragment_history.xml" value="0.2957427536231884" />
+        <entry key="..\:/Users/David/AndroidStudioProjects/stepApp/app/src/main/res/layout/fragment_history.xml" value="0.25" />
         <entry key="..\:/Users/David/AndroidStudioProjects/stepApp/app/src/main/res/layout/fragment_home.xml" value="0.3278985507246377" />
         <entry key="..\:/Users/David/AndroidStudioProjects/stepApp/app/src/main/res/layout/fragment_update_goal.xml" value="0.18541666666666667" />
         <entry key="..\:/Users/David/AndroidStudioProjects/stepApp/app/src/main/res/layout/goal_dropdown.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/David/AndroidStudioProjects/stepApp/app/src/main/res/layout/goal_row.xml" value="0.33" />
         <entry key="..\:/Users/David/AndroidStudioProjects/stepApp/app/src/main/res/menu/bottom_nav_menu.xml" value="0.33697916666666666" />
         <entry key="..\:/Users/David/AndroidStudioProjects/stepApp/app/src/main/res/menu/top_menu.xml" value="0.2838541666666667" />
+        <entry key="..\:/Users/David/AndroidStudioProjects/stepApp/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.3" />
+        <entry key="..\:/Users/David/AndroidStudioProjects/stepApp/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.3" />
       </map>
     </option>
   </component>

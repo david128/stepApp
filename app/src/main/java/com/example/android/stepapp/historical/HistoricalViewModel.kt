@@ -21,13 +21,11 @@ class HistoricalViewModel(val dayDatabaseDao: DayDatabaseDao, val goalDatabaseDa
     private  val pref  = Pref(application)
     val hPref = pref.readHistoricalFromDS.asLiveData()
 
-
     init {
         allGoals = goalDatabaseDao.getAllGoals()
     }
 
-    fun loadDay(currentDay : DayData)
-    {
+    fun loadDay(currentDay : DayData) {
         day=currentDay
     }
 
