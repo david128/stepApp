@@ -70,12 +70,37 @@ class AddGoalFragment : Fragment() {
             goal.goalName =goalName
             goal.stepGoal = Integer.parseInt(stepGoal.toString())
             viewModel.attemptAddGoal(goal)
-
         }
     }
 
     //check not empty
     private fun inputCheck(goalName: String, stepGoal: Editable): Boolean{
-        return !(TextUtils.isEmpty(goalName) && stepGoal.isEmpty() )
+        var flag = 0
+        if (TextUtils.isEmpty(goalName)){
+            flag++
+        }
+        if (stepGoal.isEmpty()){
+            flag = flag + 2
+        }
+
+        when(flag){
+            0-> return true
+            1-> Toast.makeText(
+                requireContext(),
+                "Error: please enter a goal name",
+                Toast.LENGTH_SHORT
+            ).show()
+            2->Toast.makeText(
+                requireContext(),
+                "Error: please enter a step goal value",
+                Toast.LENGTH_SHORT
+            ).show()
+            3->Toast.makeText(
+                requireContext(),
+                "Error: please enter a step goal name and target",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+        return false
     }
 }

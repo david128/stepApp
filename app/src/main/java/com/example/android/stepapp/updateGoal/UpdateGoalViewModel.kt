@@ -14,10 +14,17 @@ class UpdateGoalViewModel(val database: GoalDatabaseDao, application: Applicatio
 
 
     private var viewModelJob = Job()
+    private val _state =MutableLiveData<Int>()
+    val state: LiveData<Int>
+        get() = _state
 
     override fun onCleared(){
         super.onCleared()
         viewModelJob.cancel()
+    }
+
+    init {
+        _state.value=0
     }
 
     private var goalId =0L
@@ -46,9 +53,20 @@ class UpdateGoalViewModel(val database: GoalDatabaseDao, application: Applicatio
         }
     }
 
-    fun onUpdateGoal(goal: GoalData){
-        uiScope.launch {
-            updateGoal(goal)
+    fun resetState(){
+        _state.value=0
+    }
+
+    fun attemptUpdate(goal: GoalData){
+        viewModelScope.launch {
+            if (doesGoalExist(goal.goalName)) {
+                _state.value=1
+            }
+            else{
+                updateGoal(goal)
+                _state.value=2
+            }
+
         }
     }
 
@@ -56,6 +74,10 @@ class UpdateGoalViewModel(val database: GoalDatabaseDao, application: Applicatio
         withContext(Dispatchers.IO) {
             database.update(goal)
         }
+    }
+
+    private suspend fun doesGoalExist(name:String): Boolean{
+        return database.doesGoalExistWithName(name)
     }
 
 

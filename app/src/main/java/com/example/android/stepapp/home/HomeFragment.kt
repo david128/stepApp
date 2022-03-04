@@ -24,7 +24,6 @@ import com.example.android.stepapp.databinding.FragmentHomeBinding
 class HomeFragment : Fragment() {
 
     private lateinit var viewModel : HomeViewModel
-
     private lateinit var binding: FragmentHomeBinding
 
     override fun onResume() {
@@ -50,12 +49,10 @@ class HomeFragment : Fragment() {
 
         //database set up
         val application = requireNotNull(this.activity).application
-
         val dayDataSource = DayDatabase.getInstance(application).dayDatabaseDao
         val goalDataSource = GoalDatabase.getInstance(application).goalDatabaseDao
 
         val viewModelFactory = HomeViewModelFactory(dayDataSource,goalDataSource, application)
-
         val dayViewModel= ViewModelProvider(this,viewModelFactory).get(HomeViewModel::class.java)
 
         binding.homeTrackerViewModel= dayViewModel
@@ -75,13 +72,8 @@ class HomeFragment : Fragment() {
                     viewModel.changeAddAmount(Integer.parseInt(s.toString()))
                 }
             }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
-            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
 
         viewModel.activeGoalName.observe(this, Observer{ name ->
@@ -97,7 +89,6 @@ class HomeFragment : Fragment() {
                 binding.stepsTextView.setText(newDay.stepCount.toString())
                 binding.homeGoalTextView.setText(newDay.stepGoal.toString())
                 binding.goalHomeDropdown.setText(newDay.stepGoalName)
-
                 viewModel.allGoals.value?.let { setupDropdown(it) }
 
             }
@@ -110,7 +101,6 @@ class HomeFragment : Fragment() {
             binding.circularProgressBar.progressMax=newMax.toFloat()
             if(viewModel.thisDay.value?.stepCount!= null){
                 binding.percentage.setText(getPercentage((viewModel.thisDay.value?.stepCount!!), newMax).toString() + "%")
-
             }
             binding.homeGoalTextView.setText(newMax.toString())
         })
@@ -147,14 +137,12 @@ class HomeFragment : Fragment() {
         arrayAdapter.notifyDataSetChanged()
         //when item selected, text changes,
         dropDown.addTextChangedListener(object: TextWatcher{
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 Log.d("Home", "Text changed" + dropDown.text.toString())
                 viewModel.changeDayGoal(dropDown.text.toString())
             }
-            override fun afterTextChanged(p0: Editable?) {
-            }
+            override fun afterTextChanged(p0: Editable?) {}
         })
 
 
