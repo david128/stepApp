@@ -41,7 +41,7 @@ class GoalsFragment : Fragment(), ListAdapter.OnGoalListner {
 
     private lateinit var viewModel: GoalsViewModel
     private var activeName = ""
-
+    private var allowEditing = false
 
     override fun onResume() {
         super.onResume()
@@ -50,11 +50,11 @@ class GoalsFragment : Fragment(), ListAdapter.OnGoalListner {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,savedInstanceState: Bundle?)
     : View? {
+
         // Inflate the layout for this fragment
         val binding : FragmentGoalsBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_goals, container, false)
         binding.floatingActionButton.setOnClickListener{
             findNavController().navigate(R.id.action_goalsFragment2_to_addGoalFragment)
-
         }
 
 
@@ -72,7 +72,7 @@ class GoalsFragment : Fragment(), ListAdapter.OnGoalListner {
         recyclerView.adapter= adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        Toast.makeText(requireContext(), viewModel.gPref.value.toString(), Toast.LENGTH_SHORT).show()
+
 
         //delete functionality
         val swipeToDeleteCallback = object : SwipeToDeleteCallback(){
@@ -103,7 +103,7 @@ class GoalsFragment : Fragment(), ListAdapter.OnGoalListner {
         })
 
         //observe thisDay and update active
-        viewModel.activeGoal.observe(viewLifecycleOwner, Observer { day ->
+        viewModel.activeGoalName.observe(viewLifecycleOwner, Observer { day ->
             if (day != null) {
                 Log.d("acG","change in ActiveGoalDetected ")
                 activeName=day
@@ -113,6 +113,9 @@ class GoalsFragment : Fragment(), ListAdapter.OnGoalListner {
                 viewModel.readAllData.value?.let { updateGoals(it,adapter,binding.activeGoalName,binding.activeGoalTarget ) }
             }
         })
+
+        viewModel.gPref.observe(this, { boolean ->
+            allowEditing = boolean  })
 
         return binding.root
     }
@@ -124,7 +127,6 @@ class GoalsFragment : Fragment(), ListAdapter.OnGoalListner {
         for (g in inactiveGoals){
             if (g.goalName==activeName){
                 activeGoal =g
-
             }
         }
         inactiveGoals.remove(activeGoal)
@@ -135,13 +137,11 @@ class GoalsFragment : Fragment(), ListAdapter.OnGoalListner {
 
 
     override fun onGoalClick(goal : GoalData) {
-
-
-        if (viewModel.gPref.value == true){
+        if (allowEditing == true){
             val action = GoalsFragmentDirections.actionGoalsFragment2ToUpdateGoalFragment(goal)
             findNavController().navigate(action)
         }else {
-            //Toast.makeText(requireContext(), "Editing Disabled", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Editing Disabled", Toast.LENGTH_SHORT).show()
         }
     }
 

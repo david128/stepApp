@@ -19,7 +19,9 @@ class GoalsViewModel(val goalDatabaseDao: GoalDatabaseDao, val dayDatabaseDao: D
     private val uiScope = CoroutineScope(Dispatchers.Main+viewModelJob)
     private var deletedGoal : GoalData? = null
     private  val pref  = Pref(application)
-    val gPref : LiveData<Boolean>
+    val gPref = pref.readGoalEditingFromDS.asLiveData()
+    val activeGoalName = pref.readActiveGoalfromDS.asLiveData()
+
     //used to get current day, and then active goal
     private val currDate = Calendar.getInstance()
     private val dts = DateToString()
@@ -40,9 +42,7 @@ class GoalsViewModel(val goalDatabaseDao: GoalDatabaseDao, val dayDatabaseDao: D
     init {
         readAllData = goalDatabaseDao.getAllGoals()
         getThisDay()
-        Log.d("acG","Initting")
-        gPref = pref.readGoalEditingFromDS.asLiveData()
-
+        Log.d("acG","Initiating")
     }
 
 
@@ -50,7 +50,6 @@ class GoalsViewModel(val goalDatabaseDao: GoalDatabaseDao, val dayDatabaseDao: D
     fun getGoals(){
         readAllData = goalDatabaseDao.getAllGoals()
         Log.d("acG","Getting goals")
-
     }
 
     fun deleteGoal(goal:GoalData){

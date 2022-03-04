@@ -21,6 +21,7 @@ class HistoricalViewModel(val dayDatabaseDao: DayDatabaseDao, val goalDatabaseDa
     private  val pref  = Pref(application)
     val hPref = pref.readHistoricalFromDS.asLiveData()
 
+
     init {
         allGoals = goalDatabaseDao.getAllGoals()
     }
@@ -36,13 +37,23 @@ class HistoricalViewModel(val dayDatabaseDao: DayDatabaseDao, val goalDatabaseDa
         }
     }
 
-    fun updateDay(stepCount:Int, stepGoal: Int, stepGoalName: String){
-        day.stepGoal = stepGoal
+    fun updateDay(stepCount:Int, stepGoalName: String){
         day.stepGoalName = stepGoalName
         day.stepCount = stepCount
         viewModelScope.launch {
             update(day)
+            pref.saveActiveGoal(day.stepGoalName)
         }
     }
+
+    //update step goal
+    fun changeDayGoal(name: String) {
+        for (g in allGoals.value!!){
+            if (g.goalName == name){
+                day.stepGoal =g.stepGoal
+            }
+        }
+    }
+
 
 }

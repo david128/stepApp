@@ -9,6 +9,7 @@ import com.example.android.stepapp.database.DayData
 import com.example.android.stepapp.database.DayDatabaseDao
 import com.example.android.stepapp.database.GoalData
 import com.example.android.stepapp.database.GoalDatabaseDao
+import com.example.android.stepapp.pref.Pref
 import kotlinx.coroutines.*
 import java.util.*
 
@@ -17,6 +18,9 @@ class HomeViewModel (val dayDatabaseDao: DayDatabaseDao,val goalDatabaseDao: Goa
 
     private var selectedGoalName  =""
     private val liveTime = Calendar.getInstance()
+
+    private  val pref  = Pref(application)
+    val activeGoalName = pref.readActiveGoalfromDS.asLiveData()
 
     private val _steps = MutableLiveData<Float>()
     val steps : LiveData<Float>
@@ -34,7 +38,7 @@ class HomeViewModel (val dayDatabaseDao: DayDatabaseDao,val goalDatabaseDao: Goa
     val dts = DateToString()
 
     val allGoals : LiveData<List<GoalData>>
-
+    private var defaultGoal = GoalData()
     private var viewModelJob = Job()
 
     override fun onCleared(){
@@ -54,16 +58,14 @@ class HomeViewModel (val dayDatabaseDao: DayDatabaseDao,val goalDatabaseDao: Goa
         _steps.value=0f;
         initDay()
 
+        //default goal for when no goals in system
+        defaultGoal.stepGoal =1000
+        defaultGoal.goalName= "Default Goal"
+
     }
 
 
-    fun nextDay( changeDate: Int){
-        Log.d("setDbg", "changing date")
-        currDate.add(Calendar.DATE, changeDate)
-        initDay()
-    }
-
-    private fun initDay(){
+    fun initDay(){
         //check if this day is in the db
         _addAmount.value= 100
         Log.d("setDbg", "initing new day")
@@ -104,9 +106,23 @@ class HomeViewModel (val dayDatabaseDao: DayDatabaseDao,val goalDatabaseDao: Goa
     //add to db
     private fun onNewDay(){
         val newDay = DayData()
+
+
+
         Log.d("setDbg", "creating new day " +dts.toSimpleString(currDate.time))
         newDay.stepDate = dts.toSimpleString(currDate.time)
         viewModelScope.launch {
+
+            if (activeGoalName.value == "" ||  activeGoalName.value == null){
+                newDay.stepGoalName = defaultGoal.goalName
+                newDay.stepGoal = defaultGoal.stepGoal
+                pref.saveActiveGoal(defaultGoal.goalName)
+            }
+            else{
+                newDay.stepGoalName = activeGoalName.value!!
+                newDay.stepGoal= getGoalByName(newDay.stepGoalName)?.stepGoal!!
+            }
+
             insert(newDay)
             _thisDay.value= getThisDayFromDatabase()
             Log.d("setDbg", "fetching new day " +_thisDay.value.toString())
@@ -134,6 +150,19 @@ class HomeViewModel (val dayDatabaseDao: DayDatabaseDao,val goalDatabaseDao: Goa
         }
     }
 
+
+    fun addDefaultGoal(){
+
+        viewModelScope.launch {
+            addGoal(defaultGoal)
+        }
+    }
+
+    private suspend fun addGoal (goal:GoalData){
+        withContext(Dispatchers.IO){
+            goalDatabaseDao.insert(goal)
+        }
+    }
 
     fun addStep(){
         //_steps.value = (steps.value)?.plus(_(addAmount.value!!))
@@ -181,12 +210,13 @@ class HomeViewModel (val dayDatabaseDao: DayDatabaseDao,val goalDatabaseDao: Goa
     fun changeDayGoal(goalName: String){
         //calls setDayGoal
         setDayGoal(goalName)
-        //store selected to apply to next day
-        selectedGoalName = goalName
+
+
     }
 
-    private fun setDayGoal(goalName: String){
 
+
+    private fun setDayGoal(goalName: String){
 
          //get goal and this day and apply goal
 
@@ -195,21 +225,12 @@ class HomeViewModel (val dayDatabaseDao: DayDatabaseDao,val goalDatabaseDao: Goa
         //check if need to update
         if (goalName != _thisDay.value?.stepGoalName ?: ""){
             viewModelScope.launch {
-                var goal : GoalData?
-                if (goalName =="Default Goal"){
-                    //create a default goal
-                    goal = GoalData()
-                    goal.goalName = goalName
-                    goal.stepGoal = 1000
-                }
-                else{
-                    goal =getGoalByName(goalName)
-                }
 
+
+                var goal : GoalData? = getGoalByName(goalName)
                 val updatedDay = DayData()
 
                 if (_thisDay.value != null && goal != null) {
-
 
                     updatedDay.dayID = _thisDay.value!!.dayID
                     updatedDay.stepCount = _thisDay.value!!.stepCount
@@ -220,6 +241,9 @@ class HomeViewModel (val dayDatabaseDao: DayDatabaseDao,val goalDatabaseDao: Goa
                     updatedDay.stepGoalName = goal!!.goalName
                     update(updatedDay)
                     _thisDay.value = updatedDay
+                    //store this goal as active goal
+                    pref.saveActiveGoal(_thisDay.value!!.stepGoalName)
+
 
                 }
 

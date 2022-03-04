@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -77,8 +78,7 @@ class HistoricalFragment : Fragment() {
 
         binding.historicalUpdateButton.setOnClickListener {
             viewModel.updateDay(Integer.parseInt(binding.historicalStepCount.text.toString()),
-                Integer.parseInt(binding.historicalTargetSteps.text.toString()),
-                    binding.goalHistoricalDropdown.text.toString())
+                            binding.goalHistoricalDropdown.text.toString())
             findNavController().navigate(R.id.action_historical_to_historyFragment)
         }
 
@@ -88,6 +88,7 @@ class HistoricalFragment : Fragment() {
 
 
     private fun setupDropdown(){
+
 
         val dropDown = binding.goalHistoricalDropdown
         var goalList= arrayListOf<String>()
@@ -103,16 +104,19 @@ class HistoricalFragment : Fragment() {
             arrayAdapter.notifyDataSetChanged()
         })
 
-        //when item selected, text changes,
-        dropDown.addTextChangedListener(object: TextWatcher {
+        dropDown.addTextChangedListener(object: TextWatcher{
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                //viewModel.changeDayGoal(dropDown.text.toString())
+                Log.d("Home", "Text changed" + dropDown.text.toString())
+                viewModel.changeDayGoal(dropDown.text.toString())
+                binding.historicalTargetSteps.setText(viewModel.day.stepGoal.toString())
             }
             override fun afterTextChanged(p0: Editable?) {
             }
         })
+
+
 
 
     }

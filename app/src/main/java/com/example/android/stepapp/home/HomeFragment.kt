@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
@@ -17,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.android.stepapp.DateToString
 import com.example.android.stepapp.R
 import com.example.android.stepapp.database.DayDatabase
+import com.example.android.stepapp.database.GoalData
 import com.example.android.stepapp.database.GoalDatabase
 import com.example.android.stepapp.databinding.FragmentHomeBinding
 
@@ -29,7 +29,9 @@ class HomeFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        setupDropdown()
+        viewModel.allGoals.value?.let { setupDropdown(it) }
+        //refresh day
+        viewModel.initDay()
     }
 
     override fun onCreateView(
@@ -64,20 +66,6 @@ class HomeFragment : Fragment() {
         binding.topText.text = dts.toSimpleString(viewModel.currDate.time)
 
 
-
-        //update day
-        binding.buttonPrev.setOnClickListener{
-
-            viewModel.nextDay(-1)
-            binding.topText.text = dts.toSimpleString(viewModel.currDate.time)
-        }
-        binding.buttonNext.setOnClickListener{
-
-            viewModel.nextDay(+1)
-            binding.topText.text = dts.toSimpleString(viewModel.currDate.time)
-        }
-
-
         binding.addStepsButton.setOnClickListener{viewModel.addStep()}
 
         binding.addAmountEditText.addTextChangedListener(object : TextWatcher{
@@ -96,6 +84,9 @@ class HomeFragment : Fragment() {
             }
         })
 
+        viewModel.activeGoalName.observe(this, Observer{ name ->
+            binding.goalHomeDropdown.setText(name)
+        })
 
         viewModel.thisDay.observe(this, Observer{newDay ->
             if (newDay != null) {
@@ -106,6 +97,8 @@ class HomeFragment : Fragment() {
                 binding.stepsTextView.setText(newDay.stepCount.toString())
                 binding.homeGoalTextView.setText(newDay.stepGoal.toString())
                 binding.goalHomeDropdown.setText(newDay.stepGoalName)
+
+                viewModel.allGoals.value?.let { setupDropdown(it) }
 
             }
 
@@ -122,34 +115,36 @@ class HomeFragment : Fragment() {
             binding.homeGoalTextView.setText(newMax.toString())
         })
 
-
-
+        viewModel.allGoals.observe(viewLifecycleOwner, Observer { goals ->
+            //update list
+            if(goals.isEmpty()){
+                Toast.makeText(requireContext(),"Empty",Toast.LENGTH_SHORT ).show()
+                viewModel.addDefaultGoal()
+            }
+            setupDropdown(goals)
+        })
 
 
         return binding.root
     }
 
 
-    fun getPercentage(steps: Int, max: Int) : Int{
+    private fun getPercentage(steps: Int, max: Int) : Int{
         return (steps.toFloat()/max.toFloat() *100f).toInt()
     }
 
-    private fun setupDropdown(){
+    private fun setupDropdown(goals : List<GoalData>){
 
         val dropDown = binding.goalHomeDropdown
         var goalList= arrayListOf<String>()
         val arrayAdapter = ArrayAdapter(requireContext(),R.layout.goal_dropdown, goalList)
+
+
+        //update list
+        populateList(goalList,goals)
+
         dropDown.setAdapter(arrayAdapter)
-
-        viewModel.allGoals.observe(viewLifecycleOwner, Observer { goals ->
-            goalList.clear()
-            for (g in goals) {
-                goalList.add(g.goalName)
-            }
-            //notify updated list
-            arrayAdapter.notifyDataSetChanged()
-        })
-
+        arrayAdapter.notifyDataSetChanged()
         //when item selected, text changes,
         dropDown.addTextChangedListener(object: TextWatcher{
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -163,6 +158,13 @@ class HomeFragment : Fragment() {
         })
 
 
+    }
+
+    private fun populateList(goalList: ArrayList<String>,goals : List<GoalData> ){
+        goalList.clear()
+        for (g in goals) {
+            goalList.add(g.goalName)
+        }
     }
 
 

@@ -23,20 +23,25 @@ class Pref(context: Context) {
     private object PreferenceKeys {
         val historicalMode = booleanPreferencesKey("historical_mode")
         val goalEditingMode = booleanPreferencesKey("goal_editing_mode")
+        val activeGoalName = stringPreferencesKey("active_goal_name")
     }
 
 
     suspend fun saveHistoricalToDS(boolean: Boolean) {
         dataStore.edit { preference ->
             preference[PreferenceKeys.historicalMode] = boolean
-
         }
     }
 
     suspend fun saveGoalEditingToDS(boolean: Boolean) {
         dataStore.edit { preference ->
             preference[PreferenceKeys.goalEditingMode] = boolean
+        }
+    }
 
+    suspend fun saveActiveGoal(string: String) {
+        dataStore.edit { ag ->
+            ag[PreferenceKeys.activeGoalName] = string
         }
     }
 
@@ -67,5 +72,17 @@ class Pref(context: Context) {
             isEnabled
         }
 
+    val readActiveGoalfromDS: Flow<String> = dataStore.data
+        .catch { exception ->
+            if (exception is IOException) {
+                Log.d("DataStore", exception.message.toString())
+            } else {
+                throw exception
+            }
+        }
+        .map { preference ->
+            val activeName = preference[PreferenceKeys.activeGoalName] ?: ""
+            activeName
+        }
 
 }
