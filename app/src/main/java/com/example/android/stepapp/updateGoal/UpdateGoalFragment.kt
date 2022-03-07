@@ -9,17 +9,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.android.stepapp.R
-import com.example.android.stepapp.addGoal.AddGoalFragment
 import com.example.android.stepapp.database.GoalData
 import com.example.android.stepapp.database.GoalDatabase
-import com.example.android.stepapp.databinding.FragmentGoalsBinding
 import com.example.android.stepapp.databinding.FragmentUpdateGoalBinding
-import com.example.android.stepapp.goal.GoalsViewModel
-import com.example.android.stepapp.goal.GoalsViewModelFactory
 
 
 class UpdateGoalFragment : Fragment() {
@@ -44,12 +41,29 @@ class UpdateGoalFragment : Fragment() {
         viewModel= ViewModelProvider(this,viewModelFactory).get(UpdateGoalViewModel::class.java)
 
 
-        binding.updateTextGoalName.setText( args.currentGoal.GoalName)
+        binding.updateTextGoalName.setText( args.currentGoal.goalName)
         binding.updateTextNumber.setText(args.currentGoal.stepGoal.toString())
 
         binding.updateGoalButton.setOnClickListener{
             updateGoal(binding.updateTextGoalName.text.toString(), binding.updateTextNumber.text)
         }
+
+        //observe state and act accordingly
+        //1 -> Error
+        //2 -> Correct so allow.
+        viewModel.state.observe(viewLifecycleOwner, Observer { s ->
+            when(s){
+                1-> {
+                    Toast.makeText(
+                        requireContext(),
+                        "Error goal already exists",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    viewModel.resetState()
+                }
+                2->findNavController().navigate(R.id.action_updateGoalFragment_to_goalsFragment)
+            }
+        })
 
         // Inflate the layout for this fragment
         return binding.root
@@ -60,20 +74,46 @@ class UpdateGoalFragment : Fragment() {
             //create goal
             val updatedGoal = GoalData()
             updatedGoal.goalID = args.currentGoal.goalID
-            updatedGoal.GoalName = name
+            updatedGoal.goalName = name
             updatedGoal.stepGoal = Integer.parseInt(steps.toString())
 
             //update current goal
-            viewModel.onUpdateGoal(updatedGoal)
-            findNavController().navigate(R.id.action_updateGoalFragment_to_goalsFragment)
-
-
+            viewModel.attemptUpdate(updatedGoal)
+            
         }
 
     }
 
     private fun inputCheck(name: String, steps: Editable):Boolean{
-        return !(TextUtils.isEmpty(name) && steps.isEmpty())
+        var flag = 0
+        if (TextUtils.isEmpty(name)){
+            flag++
+        }
+        if (steps.isEmpty()){
+            flag = flag + 2
+        }
+
+        when(flag){
+            0-> return true
+            1-> Toast.makeText(
+                requireContext(),
+                "Error: please enter a goal name",
+                Toast.LENGTH_SHORT
+            ).show()
+            2->Toast.makeText(
+                requireContext(),
+                "Error: please enter a step goal value",
+                Toast.LENGTH_SHORT
+            ).show()
+            3->Toast.makeText(
+                requireContext(),
+                "Error: please enter a step goal name and target",
+                Toast.LENGTH_SHORT
+            ).show()
+
+        }
+        return false
+
     }
 
 

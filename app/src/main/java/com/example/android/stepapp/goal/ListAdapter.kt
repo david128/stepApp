@@ -1,22 +1,22 @@
 package com.example.android.stepapp.goal
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.fragment.app.ListFragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android.stepapp.database.GoalData
 import com.example.android.stepapp.R
 
-import androidx.fragment.app.FragmentTransaction
-import com.example.android.stepapp.addGoal.AddGoalFragment
-import com.example.android.stepapp.database.DayData
 
-
-class ListAdapter(private val listener: OnGoalListner) :RecyclerView.Adapter<ListAdapter.ViewHolder>(){
+class ListAdapter(private val listener: OnGoalListner, private val activeName: String) :RecyclerView.Adapter<ListAdapter.ViewHolder>(){
 
     private var goalList = emptyList<GoalData>()
+
+
+
+
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
         View.OnClickListener,View.OnLongClickListener {
         val goalName: TextView
@@ -43,12 +43,22 @@ class ListAdapter(private val listener: OnGoalListner) :RecyclerView.Adapter<Lis
 
             if (adapterPosition != RecyclerView.NO_POSITION){
                 val id = goalList[adapterPosition].goalID
-                listener.onGoalLongClick(goalList[adapterPosition].GoalName)
+                listener.onGoalLongClick(goalList[adapterPosition].goalName)
             }
             return true
         }
 
 
+    }
+
+    class ActiveViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
+        val goalName: TextView
+        val stepGoal: TextView
+        init {
+            // Define click listener for the ViewHolder's View.
+            goalName = itemView.findViewById(R.id.active_goal_row_goal_name)
+            stepGoal = itemView.findViewById(R.id.active_goal_row_step_goal)
+        }
     }
 
 
@@ -59,21 +69,24 @@ class ListAdapter(private val listener: OnGoalListner) :RecyclerView.Adapter<Lis
 
     }
 
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+
+        Log.d("CVH", parent.toString() + " + " + viewType.toString() )
         return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.goal_row,parent,false))
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentItem = goalList[position]
         holder.stepGoal.text = currentItem.stepGoal.toString()
-        holder.goalName.text = currentItem.GoalName
+        holder.goalName.text = currentItem.goalName
 
 
 
     }
 
     fun getItem(position: Int) : GoalData{
-
+        Log.d("CVH", "position " + " + " + position.toString() )
         return goalList[position]
     }
 

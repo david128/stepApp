@@ -55,6 +55,13 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui-ktx:2.4.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
+    //calendar
+    implementation 'com.github.applikeysolutions:cosmocalendar:1.0.4'
+    //preferences
+    implementation("androidx.datastore:datastore:1.0.0")
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
+
+
 
 
     testImplementation 'junit:junit:4.+'
@@ -68,6 +75,11 @@ dependencies {
     // Extensions = ViewModel + LiveData
     implementation "android.arch.lifecycle:extensions:1.1.0"
     kapt "android.arch.lifecycle:compiler:1.1.0"
+    def lifecycle_version = "2.2.0"
+
+// LiveData
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.4.1"
+
     // Room
     implementation "androidx.room:room-runtime:2.4.1"
     kapt  "androidx.room:room-compiler:2.4.1"

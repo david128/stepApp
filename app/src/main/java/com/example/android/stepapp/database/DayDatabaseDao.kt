@@ -21,7 +21,7 @@ interface DayDatabaseDao {
     fun get(key:Long) : DayData
 
     @Query(value = "DELETE FROM day_table")
-    fun clear()
+    suspend fun clear()
 
     @Query(value="SELECT * FROM day_table ORDER BY dayID DESC")
     fun getAllDays() : LiveData<List<DayData>>
